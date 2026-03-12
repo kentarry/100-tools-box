@@ -28,10 +28,18 @@
     </style>
 </head>
 
-<body class="bg-gray-50 flex h-screen overflow-hidden">
+<body class="bg-gray-50 flex h-screen overflow-hidden relative">
 
-    <aside class="w-64 bg-slate-900 text-white flex flex-col h-full shadow-xl z-20">
-        <div class="p-6 pb-2">
+    <div id="sidebar-overlay"
+        class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
+
+    <aside id="main-sidebar"
+        class="w-64 bg-slate-900 text-white flex flex-col h-full shadow-xl z-50 absolute lg:relative transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="p-6 pb-2 relative">
+            <button id="close-sidebar-btn" class="absolute top-6 right-4 text-slate-400 hover:text-white lg:hidden">
+                ✖
+            </button>
+
             <h1 class="text-2xl font-bold tracking-wider">🛠️ 萬能工具箱</h1>
             <p class="text-slate-400 text-sm mt-2 mb-4">100 in 1 實用工具集</p>
 
@@ -355,15 +363,29 @@
         </nav>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full relative overflow-y-auto bg-gray-50">
-        <header class="bg-white shadow-sm px-8 py-6 sticky top-0 z-10 flex items-center justify-between">
-            <h2 id="current-tool-title" class="text-xl font-bold text-slate-800">首頁：工具總覽目錄</h2>
+    <main class="flex-1 flex flex-col h-full relative overflow-y-auto bg-gray-50 min-w-0">
+        <header class="bg-white shadow-sm px-4 md:px-8 py-4 sticky top-0 z-10 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button id="mobile-menu-btn"
+                    class="lg:hidden text-2xl text-slate-700 hover:text-emerald-600 transition">
+                    ☰
+                </button>
+                <h2 id="current-tool-title" class="text-lg md:text-xl font-bold text-slate-800 truncate">首頁：工具總覽目錄</h2>
+            </div>
+
+            <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+                <span class="text-sm">👀</span>
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-slate-500 leading-none font-bold">總點閱觀看</span>
+                    <span id="site-view-counter" class="text-sm font-bold text-emerald-600 leading-none mt-0.5">0</span>
+                </div>
+            </div>
         </header>
 
-        <div id="home-view" class="p-8 max-w-[1400px] mx-auto w-full block">
-            <div class="flex flex-col lg:flex-row gap-8 items-start">
+        <div id="home-view" class="py-4 md:py-8 pl-4 md:pl-8 pr-0 w-full block">
+            <div class="flex flex-col lg:flex-row gap-8 items-start relative w-full justify-between">
 
-                <div class="flex-1 w-full min-w-0">
+                <div class="flex-1 w-full min-w-0 pr-4 md:pr-8 lg:pr-8 max-w-[1400px]">
                     <div id="category-filters" class="flex flex-wrap gap-2 mb-8 border-b pb-6 border-gray-200">
                         <button
                             class="px-4 py-1.5 rounded-full text-sm font-medium bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 transition filter-btn"
@@ -374,39 +396,48 @@
                     </div>
                 </div>
 
-                <aside class="hidden lg:flex flex-col gap-6 w-[300px] shrink-0 sticky top-24">
-
-                    <a href="https://www-twtest.towergame.com/mobile/games/contents/index.aspx?q_nGameNo=40001"
-                        target="_blank"
-                        class="block w-full bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition transform hover:-translate-y-1 overflow-hidden group">
-                        <img src="https://www-twtest.towergame.com/mobile/images/icon/star31.png" alt="行動官網"
-                            class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
-                    </a>
+                <aside class="hidden lg:flex flex-col gap-4 w-[160px] shrink-0 sticky top-24 ml-auto right-0">
 
                     <a href="https://www-twtest.towergame.com/Games/Freeplay/Bank/index.aspx?q_strAppID=com.igs.mjstar31official"
                         target="_blank"
-                        class="block w-full bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition transform hover:-translate-y-1 overflow-hidden group">
-                        <img src="https://stickershop.line-scdn.net/stickershop/v1/product/1453338/LINEStorePC/main.png?v=1"
-                            alt="官網" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
+                        class="block w-full bg-white rounded-md shadow-sm border border-slate-200 hover:shadow-md transition transform hover:-translate-y-1 overflow-hidden group">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLxNTOobT4guDnZL7VmtiZHXxa5yUc1ofYWA&s"
+                            alt="廣告 1" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
                     </a>
 
-                    <a href="https://docs.google.com/spreadsheets/d/1sQGxOvETKmUz41auWtSualHfA2ME89yhKVAHeomANis/edit?gid=517577839#gid=517577839"
-                        target="_blank"
-                        class="block w-full bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition transform hover:-translate-y-1 overflow-hidden group">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ30TIMHqEFEp17ca3-LnzF-KYnTzSytcbFy1nmubGE1CUCcgZF_lP56xOxOn6PoyAvcLA7RLeU6jjypb8ovAiKSzDbThGwhdgTi2C9wDw&s=10"
-                            alt="章魚好帥" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
+                    <a href="https://www-twtest.towergame.com/Games/tmd/index.aspx" target="_blank"
+                        class="block w-full bg-white rounded-md shadow-sm border border-slate-200 hover:shadow-md transition transform hover:-translate-y-1 overflow-hidden group">
+                        <img src="https://megapx-assets.dcard.tw/images/730bbf22-ee41-427f-9276-08884c1c6166/640.jpeg"
+                            alt="廣告 2" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
+                    </a>
+
+                    <a href="https://www-twtest.towergame.com/index.aspx" target="_blank"
+                        class="block w-full bg-white rounded-md shadow-sm border border-slate-200 hover:shadow-md transition transform hover:-translate-y-1 overflow-hidden group">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYbloAiwy9LeYlP7L0PocbF9h1uUc-12bpdQ&s"
+                            alt="廣告 3" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
                     </a>
 
                 </aside>
 
             </div>
         </div>
-        <div class="p-8 max-w-7xl mx-auto w-full hidden" id="tool-container">
+        <div class="p-4 md:p-8 max-w-7xl mx-auto w-full hidden" id="tool-container">
         </div>
     </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // -- 觀看人數計數器邏輯 (前端模擬) --
+            const counterElement = document.getElementById('site-view-counter');
+            let currentViews = localStorage.getItem('global_site_views');
+            if (!currentViews) currentViews = 0;
+
+            currentViews = parseInt(currentViews) + 1;
+            localStorage.setItem('global_site_views', currentViews);
+
+            counterElement.innerText = currentViews.toLocaleString();
+
+            // -- 原有與 RWD 介面邏輯 --
             const nav = document.getElementById('menu-nav');
             const overviewGrid = document.getElementById('overview-grid');
             const categoryFilters = document.getElementById('category-filters');
@@ -415,16 +446,38 @@
             const currentToolTitle = document.getElementById('current-tool-title');
             const goHomeBtn = document.getElementById('goHome');
 
+            // 手機版側邊欄控制
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('main-sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+
+            function toggleSidebar() {
+                const isClosed = sidebar.classList.contains('-translate-x-full');
+                if (isClosed) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebarOverlay.classList.remove('hidden');
+                    setTimeout(() => sidebarOverlay.classList.remove('opacity-0'), 10);
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebarOverlay.classList.add('opacity-0');
+                    setTimeout(() => sidebarOverlay.classList.add('hidden'), 300);
+                }
+            }
+
+            mobileMenuBtn.addEventListener('click', toggleSidebar);
+            closeSidebarBtn.addEventListener('click', toggleSidebar);
+            sidebarOverlay.addEventListener('click', toggleSidebar);
+
+
             let categories = [];
             let currentCategory = null;
 
-            // 1. 解析側邊欄結構，自動收集分類與工具資料
             Array.from(nav.children).forEach(el => {
                 if ((el.tagName === 'DIV' && el.classList.contains('text-xs')) ||
                     (el.tagName === 'DIV' && el.querySelector('.uppercase'))) {
 
                     let title = el.innerText.trim();
-                    // 濾除表情符號或多餘字眼，提取純標題
                     if (title.includes('🔥')) title = '🔥 熱門工具';
 
                     currentCategory = { title: title, tools: [] };
@@ -437,32 +490,27 @@
                 }
             });
 
-            // 2. 自動生成總覽頁面的 HTML
-            categories.forEach((cat, index) => {
+            categories.forEach((cat) => {
                 if (cat.tools.length === 0) return;
 
-                // 產生頂部篩選按鈕 (包含全部標籤)
                 const filterBtn = document.createElement('button');
-                filterBtn.className = 'px-4 py-1.5 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900 transition filter-btn';
+                filterBtn.className = 'px-4 py-1.5 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900 transition filter-btn whitespace-nowrap';
                 filterBtn.innerText = cat.title.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\s/g, '').replace('熱門工具', '🔥 熱門');
                 filterBtn.dataset.filter = cat.title;
                 categoryFilters.appendChild(filterBtn);
 
-                // 產生分類區塊
                 const section = document.createElement('div');
                 section.className = 'category-section';
                 section.dataset.category = cat.title;
 
-                const titleHtml = `<h3 class="text-lg font-bold text-slate-800 mb-4 border-l-4 border-emerald-400 pl-3">
-                    ${cat.title}
-                </h3>`;
+                const titleHtml = `<h3 class="text-lg font-bold text-slate-800 mb-4 border-l-4 border-emerald-400 pl-3">${cat.title}</h3>`;
 
-                let cardsHtml = `<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">`;
+                let cardsHtml = `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">`;
                 cat.tools.forEach(tool => {
                     cardsHtml += `
                         <button class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-emerald-400 text-left transition group overview-tool-btn flex items-center justify-between" data-target="${tool.id}">
-                            <div class="font-medium text-slate-700 group-hover:text-emerald-600 transition">${tool.name}</div>
-                            <span class="text-slate-300 group-hover:text-emerald-400 transition transform group-hover:translate-x-1">➔</span>
+                            <div class="font-medium text-slate-700 group-hover:text-emerald-600 transition truncate pr-2">${tool.name}</div>
+                            <span class="text-slate-300 group-hover:text-emerald-400 transition transform group-hover:translate-x-1 shrink-0">➔</span>
                         </button>
                     `;
                 });
@@ -472,10 +520,8 @@
                 overviewGrid.appendChild(section);
             });
 
-            // 3. 處理「工具總覽首頁」的篩選邏輯
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    // 更新按鈕活動狀態樣式
                     document.querySelectorAll('.filter-btn').forEach(b => {
                         b.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm', 'border-transparent');
                         b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
@@ -487,7 +533,6 @@
                     document.querySelectorAll('.category-section').forEach(section => {
                         if (filterValue === 'all' || section.dataset.category === filterValue) {
                             section.style.display = 'block';
-                            // 加入簡單的淡入動畫
                             section.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300 });
                         } else {
                             section.style.display = 'none';
@@ -496,133 +541,40 @@
                 });
             });
 
-            // 4. 處理點擊總覽卡片進入工具的邏輯
             document.querySelectorAll('.overview-tool-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const targetId = e.currentTarget.dataset.target;
-                    // 觸發側邊欄對應按鈕的點擊事件 (連動原本 app.js 的邏輯)
                     const sideBarBtn = document.querySelector(`nav button[data-tool="${targetId}"]`);
                     if (sideBarBtn) {
                         sideBarBtn.click();
-                        // 隱藏首頁，顯示工具容器
                         homeView.style.display = 'none';
                         toolContainer.classList.remove('hidden');
                     }
                 });
             });
 
-            // 5. 處理返回首頁的邏輯
             goHomeBtn.addEventListener('click', () => {
                 currentToolTitle.innerText = '首頁：工具總覽目錄';
                 toolContainer.classList.add('hidden');
                 homeView.style.display = 'block';
 
-                // 取消側邊欄選中狀態
                 document.querySelectorAll('#menu-nav button').forEach(b => {
                     b.classList.remove('active-menu', 'bg-slate-700', 'text-emerald-400');
                     b.classList.add('text-slate-300');
                 });
+
+                if (window.innerWidth < 1024) toggleSidebar();
             });
 
-            // 6. 確保側邊欄點擊時也會隱藏首頁
             nav.addEventListener('click', (e) => {
                 if (e.target.tagName === 'BUTTON' && e.target.hasAttribute('data-tool')) {
                     homeView.style.display = 'none';
                     toolContainer.classList.remove('hidden');
+                    if (window.innerWidth < 1024) toggleSidebar();
                 }
             });
         });
     </script>
-
-    <script src="tools/watermark.js"></script>
-    <script src="tools/Background Removal.js"></script>
-    <script src="tools/Password Leak Checker.js"></script>
-    <script src="tools/Email Obfuscator.js"></script>
-    <script src="tools/Secure URL Message.js"></script>
-    <script src="tools/Signature Pad.js"></script>
-    <script src="tools/Pangu Spacing.js"></script>
-    <script src="tools/Text Decoder.js"></script>
-    <script src="tools/capital-number.js"></script>
-    <script src="tools/redundancy-filter.js"></script>
-    <script src="tools/HEIC Converter.js"></script>
-    <script src="tools/Color Picker.js"></script>
-    <script src="tools/Photo Cropper.js"></script>
-    <script src="tools/Display Tester.js"></script>
-    <script src="tools/Web Whiteboard.js"></script>
-    <script src="tools/Expense Splitter.js"></script>
-    <script src="tools/WiFi QR Gen.js"></script>
-    <script src="tools/Relative Title.js"></script>
-    <script src="tools/Truth or Dare.js"></script>
-    <script src="tools/Comment Picker.js"></script>
-    <script src="tools/Loan Calculator.js"></script>
-    <script src="tools/Compound Interest.js"></script>
-    <script src="tools/Currency Converter.js"></script>
-    <script src="tools/Credit Interest.js"></script>
-    <script src="tools/Timezone Coordinator.js"></script>
-    <script src="tools/Unit Converter.js"></script>
-    <script src="tools/Health Calc.js"></script>
-    <script src="tools/Typing Test.js"></script>
-    <script src="tools/Period Predictor.js"></script>
-    <script src="tools/Alcohol Calculator.js"></script>
-    <script src="tools/Recipe Scaler.js"></script>
-    <script src="tools/VAT Checker.js"></script>
-    <script src="tools/Laundry Symbols.js"></script>
-    <script src="tools/Contrast Checker.js"></script>
-    <script src="tools/Mouse Tester.js"></script>
-    <script src="tools/JSON Tool.js"></script>
-    <script src="tools/Base64 Tool.js"></script>
-    <script src="tools/Pet Age Calc.js"></script>
-    <script src="tools/Calendar Converter.js"></script>
-    <script src="tools/Fortune Simulator.js"></script>
-    <script src="tools/Greeting Gen.js"></script>
-    <script src="tools/Font Viewer.js"></script>
-    <script src="tools/Morse Code.js"></script>
-    <script src="tools/Clipboard Manager.js"></script>
-    <script src="tools/Big Timer.js"></script>
-    <script src="tools/MBTI Guide.js"></script>
-    <script src="tools/Food Roulette.js"></script>
-    <script src="tools/Passport Checker.js"></script>
-    <script src="tools/Taxi Fare.js"></script>
-    <script src="tools/Fuel Splitter.js"></script>
-    <script src="tools/Keyboard Tester.js"></script>
-    <script src="tools/Trash Reminder.js"></script>
-    <script src="tools/Area Converter.js"></script>
-    <script src="tools/Plant Tracker.js"></script>
-    <script src="tools/Distance Meter.js"></script>
-    <script src="tools/Password Entropy.js"></script>
-    <script src="tools/Weather Outfit.js"></script>
-    <script src="tools/Video to GIF.js"></script>
-    <script src="tools/Metronome.js"></script>
-    <script src="tools/Credit Card Validator.js"></script>
-    <script src="tools/Invoice Checker.js"></script>
-    <script src="tools/SOS Location.js"></script>
-    <script src="tools/Screw Size.js"></script>
-    <script src="tools/HTML Entities.js"></script>
-    <script src="tools/Password Gen.js"></script>
-    <script src="tools/Screen Info.js"></script>
-    <script src="tools/MD Preview.js"></script>
-    <script src="tools/Clean URL.js"></script>
-    <script src="tools/FS Clock.js"></script>
-    <script src="tools/Name Strokes.js"></script>
-    <script src="tools/Font Compare.js"></script>
-    <script src="tools/Color Palette.js"></script>
-    <script src="tools/Case Converter.js"></script>
-    <script src="tools/Countdown.js"></script>
-    <script src="tools/Line Counter.js"></script>
-    <script src="tools/Random Number.js"></script>
-    <script src="tools/Link Extractor.js"></script>
-    <script src="tools/Math Reference.js"></script>
-    <script src="tools/Temp Converter.js"></script>
-    <script src="tools/Unicode Tool.js"></script>
-    <script src="tools/Eye Tester.js"></script>
-    <script src="tools/Ruler.js"></script>
-    <script src="tools/Data Mask.js"></script>
-    <script src="tools/Color Lighten.js"></script>
-    <script src="tools/Whitespace Fix.js"></script>
-    <script src="tools/Array Shuffler.js"></script>
-    <script src="tools/Blue Light Filter.js"></script>
-    <script src="tools/Grayscale Tool.js"></script>
-    <script src="tools/IP Checker.js"></script>
 
     <script src="app.js"></script>
 </body>
