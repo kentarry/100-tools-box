@@ -25,6 +25,13 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #64748b;
         }
+
+        /* 隱藏數字輸入框的上下箭頭，讓畫面更簡潔 */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     </style>
 </head>
 
@@ -373,11 +380,13 @@
                 <h2 id="current-tool-title" class="text-lg md:text-xl font-bold text-slate-800 truncate">首頁：工具總覽目錄</h2>
             </div>
 
-            <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
-                <span class="text-sm">👀</span>
+            <div class="flex items-center gap-3 bg-slate-100 px-4 py-2 rounded-full border border-slate-200">
+                <span class="text-lg">👀</span>
                 <div class="flex flex-col">
-                    <span class="text-[10px] text-slate-500 leading-none font-bold">總點閱觀看</span>
-                    <span id="site-view-counter" class="text-sm font-bold text-emerald-600 leading-none mt-0.5">0</span>
+                    <span class="text-xs text-slate-500 leading-none font-bold mb-1">總點閱觀看</span>
+                    <input type="number" id="site-view-counter"
+                        class="text-xl md:text-2xl font-bold text-emerald-600 bg-transparent border-none outline-none p-0 w-24 text-left appearance-none focus:ring-0"
+                        value="0" min="0">
                 </div>
             </div>
         </header>
@@ -428,6 +437,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // -- 觀看人數計數器邏輯 (前端模擬) --
+            // 抓取修改過後的 input 元素
             const counterElement = document.getElementById('site-view-counter');
             let currentViews = localStorage.getItem('global_site_views');
             if (!currentViews) currentViews = 0;
@@ -435,7 +445,19 @@
             currentViews = parseInt(currentViews) + 1;
             localStorage.setItem('global_site_views', currentViews);
 
-            counterElement.innerText = currentViews.toLocaleString();
+            // 將數值賦予給 input (使用 value 而非 innerText)
+            counterElement.value = currentViews;
+
+            // 監聽使用者輸入修改，允許填入 0 來刪除/重置統計數量
+            counterElement.addEventListener('change', (e) => {
+                const newValue = parseInt(e.target.value, 0);
+                if (!isNaN(newValue) && newValue >= 0) {
+                    localStorage.setItem('global_site_views', newValue);
+                } else {
+                    // 如果輸入無效（例如空白或負數），恢復回原本 localStorage 裡的正確值
+                    e.target.value = localStorage.getItem('global_site_views');
+                }
+            });
 
             // -- 原有與 RWD 介面邏輯 --
             const nav = document.getElementById('menu-nav');
@@ -576,8 +598,6 @@
         });
     </script>
 
-    </script>
-
     <script src="tools/watermark.js"></script>
     <script src="tools/Background Removal.js"></script>
     <script src="tools/Password Leak Checker.js"></script>
@@ -672,4 +692,3 @@
 </body>
 
 </html>
-
