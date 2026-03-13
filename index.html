@@ -437,10 +437,36 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // ==========================================
-            // 1. Google Sheets 計數與追蹤 API
+            // 1. Google Sheets 計數與追蹤 API (極速優化版)
             // ==========================================
             const GAS_URL = "https://script.google.com/macros/s/AKfycbwErP5VVl_6vI29OiH4BAfmvCwC2eYmO5QrvK-BKYmYz1M6dCGyIffxmQgFwKzZlKs/exec";
             const counterElement = document.getElementById('site-view-counter');
+
+            // 技巧 1：0 秒顯示！先從瀏覽器本地抓取上次的紀錄墊檔
+            let cachedViews = localStorage.getItem('site_total_views');
+            if (cachedViews) {
+                counterElement.value = cachedViews;
+            } else {
+                // 如果是第一次來，顯示三個點避免顯示 0 產生錯覺
+                counterElement.type = "text";
+                counterElement.value = "...";
+            }
+
+            // 技巧 2：極速讀取最新人數 (不寫入，速度快)
+            async function fetchFastTotalViews() {
+                try {
+                    const res = await fetch(GAS_URL); // 發送 GET 請求
+                    const data = await res.json();
+                    if (data.totalViews !== undefined) {
+                        counterElement.type = "number"; // 切換回數字格式
+                        counterElement.value = data.totalViews;
+                        // 更新本地暫存
+                        localStorage.setItem('site_total_views', data.totalViews);
+                    }
+                } catch (err) {
+                    console.error("快速讀取人數失敗", err);
+                }
+            }
 
             // 取得使用者 IP
             async function getIP() {
@@ -453,13 +479,12 @@
                 }
             }
 
-            // 紀錄造訪並更新總人數
+            // 技巧 3：背景默默寫入造訪紀錄 (不卡畫面)
             async function recordVisit() {
-                const ip = await getIP();
+                const ip = await getIP(); // 等待 IP 需要時間
                 try {
                     const res = await fetch(GAS_URL, {
                         method: 'POST',
-                        // 使用 text/plain 避免觸發 CORS 預檢錯誤
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify({
                             action: 'visit',
@@ -469,8 +494,9 @@
                     });
                     const result = await res.json();
                     if (result.status === 'success') {
-                        // 從後端試算表直接取得精確行數來顯示
+                        // 寫入完成後，再做最後一次最精準的更新
                         counterElement.value = result.totalViews;
+                        localStorage.setItem('site_total_views', result.totalViews);
                     }
                 } catch (err) {
                     console.error("無法連線至計數器 API", err);
@@ -498,10 +524,11 @@
                 });
             });
 
-            // 載入時觸發紀錄
-            if (GAS_URL !== "https://script.google.com/macros/s/AKfycbwErP5VVl_6vI29OiH4BAfmvCwC2eYmO5QrvK-BKYmYz1M6dCGyIffxmQgFwKzZlKs/exec") {
-                recordVisit();
-            }
+            // 【雙管齊下同時啟動】
+            // 1. 馬上抓最新數字更新畫面 (快)
+            fetchFastTotalViews();
+            // 2. 在背景慢慢抓IP並把資料寫入試算表 (慢)
+            recordVisit();
 
             // ==========================================
             // 2. 原本的介面邏輯 (側邊欄、篩選器)
