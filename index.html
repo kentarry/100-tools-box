@@ -519,6 +519,11 @@
             // 技巧 3：背景默默寫入造訪紀錄 (不卡畫面)
             async function recordVisit() {
                 const ip = await getIP(); // 等待 IP 需要時間
+
+                // ★新增：檢查網址有沒有夾帶分享來源標籤 (例如 ?ref=fb)
+                const urlParams = new URLSearchParams(window.location.search);
+                const trafficSource = urlParams.get('ref') || 'direct'; // 如果沒有標籤，就是 direct(直接造訪)
+
                 try {
                     const res = await fetch(GAS_URL, {
                         method: 'POST',
@@ -526,12 +531,12 @@
                         body: JSON.stringify({
                             action: 'visit',
                             ip: ip,
-                            userAgent: navigator.userAgent
+                            userAgent: navigator.userAgent,
+                            ref: trafficSource // ★將來源傳送給 Google Apps Script
                         })
                     });
                     const result = await res.json();
                     if (result.status === 'success') {
-                        // 寫入完成後，再做最後一次最精準的更新
                         counterElement.value = result.totalViews;
                         localStorage.setItem('site_total_views', result.totalViews);
                     }
@@ -705,11 +710,24 @@
             });
         });
         // ==========================================
-        // 3. 社群分享功能 (新增)
+        // 3. 社群分享功能 (新增紀錄與標籤追蹤)
         // ==========================================
-        window.shareTo = function (platform) {
-            // 抓取當前頁面的網址與標題
-            const currentUrl = encodeURIComponent(window.location.href);
+        window.shareTo = async function (platform) {
+            // ★新增：背景發送 API 記錄分享動作 (不使用 await 阻擋網頁跳轉，讓它在背景默默發送)
+            getIP().then(ip => {
+                fetch(GAS_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'share', ip: ip, platform: platform })
+                }).catch(err => console.error("紀錄分享失敗", err));
+            });
+
+            // ★新增：動態幫網址加上 ?ref=platform (例如 ?ref=fb)，這樣別人點進來才知道來源
+            const shareUrlObj = new URL(window.location.href);
+            shareUrlObj.searchParams.set('ref', platform);
+
+            // 使用帶有來源標記的新網址來分享
+            const currentUrl = encodeURIComponent(shareUrlObj.toString());
             const title = encodeURIComponent(document.title);
 
             if (platform === 'fb') {
@@ -719,8 +737,8 @@
             } else if (platform === 'threads') {
                 window.open(`https://threads.net/intent/post?text=${title}%20${currentUrl}`, '_blank');
             } else if (['ig', 'tiktok', 'xhs'].includes(platform)) {
-                // IG, TikTok, 小紅書沒有網頁直接跳轉分享的 API，改為複製網址到剪貼簿
-                navigator.clipboard.writeText(window.location.href).then(() => {
+                // 解碼回原本的網址，因為複製到剪貼簿不需要 URIComponent 編碼
+                navigator.clipboard.writeText(shareUrlObj.toString()).then(() => {
                     const platformName = platform === 'ig' ? 'Instagram' : (platform === 'tiktok' ? '抖音' : '小紅書');
                     alert(`✅ 已複製網站連結！\n請開啟 ${platformName} APP 貼上連結與朋友分享。`);
                 }).catch(err => {
@@ -825,4 +843,3 @@
 </body>
 
 </html>
-
