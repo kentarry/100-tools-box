@@ -708,45 +708,46 @@
                     if (window.innerWidth < 1024) toggleSidebar();
                 }
             });
-        });
-        // ==========================================
-        // 3. 社群分享功能 (新增紀錄與標籤追蹤)
-        // ==========================================
-        window.shareTo = async function (platform) {
-            // ★新增：背景發送 API 記錄分享動作 (不使用 await 阻擋網頁跳轉，讓它在背景默默發送)
-            getIP().then(ip => {
-                fetch(GAS_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'share', ip: ip, platform: platform })
-                }).catch(err => console.error("紀錄分享失敗", err));
-            });
 
-            // ★新增：動態幫網址加上 ?ref=platform (例如 ?ref=fb)，這樣別人點進來才知道來源
-            const shareUrlObj = new URL(window.location.href);
-            shareUrlObj.searchParams.set('ref', platform);
-
-            // 使用帶有來源標記的新網址來分享
-            const currentUrl = encodeURIComponent(shareUrlObj.toString());
-            const title = encodeURIComponent(document.title);
-
-            if (platform === 'fb') {
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, '_blank', 'width=600,height=400');
-            } else if (platform === 'line') {
-                window.open(`https://social-plugins.line.me/lineit/share?url=${currentUrl}`, '_blank');
-            } else if (platform === 'threads') {
-                window.open(`https://threads.net/intent/post?text=${title}%20${currentUrl}`, '_blank');
-            } else if (['ig', 'tiktok', 'xhs'].includes(platform)) {
-                // 解碼回原本的網址，因為複製到剪貼簿不需要 URIComponent 編碼
-                navigator.clipboard.writeText(shareUrlObj.toString()).then(() => {
-                    const platformName = platform === 'ig' ? 'Instagram' : (platform === 'tiktok' ? '抖音' : '小紅書');
-                    alert(`✅ 已複製網站連結！\n請開啟 ${platformName} APP 貼上連結與朋友分享。`);
-                }).catch(err => {
-                    console.error('複製失敗', err);
-                    alert('複製失敗，請手動複製網址分享！');
+            // ==========================================
+            // 3. 社群分享功能 (新增紀錄與標籤追蹤)
+            // ==========================================
+            window.shareTo = async function (platform) {
+                // ★背景發送 API 記錄分享動作
+                getIP().then(ip => {
+                    fetch(GAS_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ action: 'share', ip: ip, platform: platform })
+                    }).catch(err => console.error("紀錄分享失敗", err));
                 });
-            }
-        };
+
+                // ★動態幫網址加上 ?ref=platform
+                const shareUrlObj = new URL(window.location.href);
+                shareUrlObj.searchParams.set('ref', platform);
+
+                // 使用帶有來源標記的新網址來分享
+                const currentUrl = encodeURIComponent(shareUrlObj.toString());
+                const title = encodeURIComponent(document.title);
+
+                if (platform === 'fb') {
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, '_blank', 'width=600,height=400');
+                } else if (platform === 'line') {
+                    window.open(`https://social-plugins.line.me/lineit/share?url=${currentUrl}`, '_blank');
+                } else if (platform === 'threads') {
+                    window.open(`https://threads.net/intent/post?text=${title}%20${currentUrl}`, '_blank');
+                } else if (['ig', 'tiktok', 'xhs'].includes(platform)) {
+                    navigator.clipboard.writeText(shareUrlObj.toString()).then(() => {
+                        const platformName = platform === 'ig' ? 'Instagram' : (platform === 'tiktok' ? '抖音' : '小紅書');
+                        alert(`✅ 已複製網站連結！\n請開啟 ${platformName} APP 貼上連結與朋友分享。`);
+                    }).catch(err => {
+                        console.error('複製失敗', err);
+                        alert('複製失敗，請手動複製網址分享！');
+                    });
+                }
+            };
+
+        }); // <--- 💡 把原本在上面的 DOMContentLoaded 結尾 `});` 移到這裡！
     </script>
 
     <script src="tools/watermark.js"></script>
