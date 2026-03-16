@@ -204,7 +204,7 @@
                 data-tool="invoiceChecker">發票快對</button>
             <button
                 class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="vatChecker">公司統編驗證</button>
+                data-tool="vatChecker">公司統編查驗</button>
             <button
                 class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
                 data-tool="creditCardValidator">信用卡格式校驗</button>
@@ -429,43 +429,88 @@
             </div>
         </header>
 
-        <div id="home-view" class="py-4 md:py-8 pl-4 md:pl-8 pr-0 w-full block">
+        <div id="home-view" class="py-4 md:py-8 px-4 md:px-8 w-full block">
             <div class="flex flex-col lg:flex-row gap-8 items-start relative w-full justify-between">
 
-                <div class="flex-1 w-full min-w-0 pr-4 md:pr-8 lg:pr-8 max-w-[1400px]">
+                <div class="flex-1 w-full min-w-0 lg:pr-8 max-w-[1400px]">
+
+                    <!-- ✨ 歡迎區塊 Hero Section -->
+                    <div class="hero-section mb-8 rounded-2xl p-6 md:p-8 text-white relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700"></div>
+                        <div class="absolute inset-0 opacity-10"
+                            style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><circle cx=%2240%22 cy=%2240%22 r=%222%22 fill=%22white%22/></svg>'); background-size: 20px 20px;">
+                        </div>
+                        <div class="relative z-10">
+                            <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mb-2">🛠️ 歡迎使用多功能工具箱</h2>
+                            <p class="text-emerald-100 text-sm md:text-base max-w-xl">
+                                集結各種實用線上工具，完全免費、無需安裝。從開發者到日常生活，一站搞定所有需求！</p>
+                        </div>
+                    </div>
+
+                    <!-- 🏷️ 分類篩選按鈕列 -->
                     <div id="category-filters" class="flex flex-wrap gap-2 mb-8 border-b pb-6 border-gray-200">
                         <button
                             class="px-4 py-1.5 rounded-full text-sm font-medium bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 transition filter-btn"
-                            data-filter="all">顯示全部</button>
+                            data-filter="all">🗂️ 顯示全部</button>
                     </div>
 
+                    <!-- 📋 工具網格 -->
                     <div id="overview-grid" class="space-y-10">
                     </div>
                 </div>
 
-                <aside class="hidden lg:flex flex-col gap-4 w-[160px] shrink-0 sticky top-24 ml-auto right-0">
+                <!-- 📢 廣告側欄 (桌面: 右側垂直排列, 手機: 底部水平排列) -->
+                <aside class="w-full lg:w-[150px] shrink-0 lg:ml-auto lg:sticky lg:top-20 lg:self-start">
+                    <div
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider text-center mb-2 flex items-center gap-1 justify-center">
+                        <span>🤝</span> 贊助夥伴
+                    </div>
 
-                    <a href="https://www.gametower.com.tw/Games/FreePlay/Mj/star31?utm_source=kentarry&utm_medium=banner1&utm_campaign=0313promotion"
-                        target="_blank" data-ad-id="廣告1_"
-                        class="ad-link block w-full bg-white rounded-md shadow-sm border border-slate-200 hover:shadow-md transition transform hover:-translate-y-1 overflow-hidden group">
-                        <img src="./advertise/advertise1.jpeg" alt="廣告 1"
-                            class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
-                    </a>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-3 lg:gap-2">
+                        <a href="https://www.gametower.com.tw/Games/FreePlay/Mj/star31?utm_source=kentarry&utm_medium=banner1&utm_campaign=0313promotion"
+                            target="_blank" data-ad-id="廣告1_"
+                            class="ad-link ad-card block w-full bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition transform hover:-translate-y-1 overflow-hidden group">
+                            <img src="./advertise/advertise1.jpeg" alt="廣告 1"
+                                class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
+                            <div class="ad-label px-2 py-2 text-center">
+                                <span class="text-sm font-semibold text-slate-600">明星三缺一</span>
+                                <span class="text-xs text-slate-400 block">gametower</span>
+                            </div>
+                        </a>
 
-                    <a href="https://www.gametower.com.tw/Games/TMD?utm_source=kentarry&utm_medium=banner2&utm_campaign=0313promotion"
-                        target="_blank" data-ad-id="廣告2_tmd"
-                        class="ad-link block w-full bg-white rounded-md shadow-sm border border-slate-200 hover:shadow-md transition transform hover:-translate-y-1 overflow-hidden group">
-                        <img src="./advertise/advertise2.jpeg" alt="advertise 2"
-                            class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
-                    </a>
+                        <a href="https://www.gametower.com.tw/Games/TMD?utm_source=kentarry&utm_medium=banner2&utm_campaign=0313promotion"
+                            target="_blank" data-ad-id="廣告2_tmd"
+                            class="ad-link ad-card block w-full bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition transform hover:-translate-y-1 overflow-hidden group">
+                            <img src="./advertise/advertise2.jpeg" alt="廣告 2"
+                                class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
+                            <div class="ad-label px-2 py-2 text-center">
+                                <span class="text-sm font-semibold text-slate-600">神來也德州撲克</span>
+                                <span class="text-xs text-slate-400 block">gametower</span>
+                            </div>
+                        </a>
 
-                    <a href="https://cmj2.com.tw?utm_source=kentarry&utm_medium=banner3&utm_campaign=0313promotion"
-                        target="_blank" data-ad-id="廣告3_首頁"
-                        class="ad-link block w-full bg-white rounded-md shadow-sm border border-slate-200 hover:shadow-md transition transform hover:-translate-y-1 overflow-hidden group">
-                        <img src="./advertise/advertise3.jpeg" alt="廣告 3"
-                            class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
-                    </a>
+                        <a href="https://cmj2.com.tw?utm_source=kentarry&utm_medium=banner3&utm_campaign=0313promotion"
+                            target="_blank" data-ad-id="廣告3_首頁"
+                            class="ad-link ad-card block w-full bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition transform hover:-translate-y-1 overflow-hidden group">
+                            <img src="./advertise/advertise3.jpeg" alt="廣告 3"
+                                class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
+                            <div class="ad-label px-2 py-2 text-center">
+                                <span class="text-sm font-semibold text-slate-600">競技麻將2</span>
+                                <span class="text-xs text-slate-400 block">cmj2</span>
+                            </div>
+                        </a>
 
+                        <a href="https://www.twainews.com.tw/3325835069235672403720855" target="_blank"
+                            data-ad-id="廣告4_首頁"
+                            class="ad-link ad-card block w-full bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition transform hover:-translate-y-1 overflow-hidden group">
+                            <img src="./advertise/advertise4.jpg" alt="廣告 4"
+                                class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
+                            <div class="ad-label px-2 py-2 text-center">
+                                <span class="text-sm font-semibold text-slate-600">台灣新聞通</span>
+                                <span class="text-xs text-slate-400 block">twainews</span>
+                            </div>
+                        </a>
+                    </div>
                 </aside>
 
             </div>
@@ -479,7 +524,7 @@
             // ==========================================
             // 1. Google Sheets 計數與追蹤 API (極速優化版)
             // ==========================================
-            const GAS_URL = "https://script.google.com/macros/s/AKfycbwErP5VVl_6vI29OiH4BAfmvCwC2eYmO5QrvK-BKYmYz1M6dCGyIffxmQgFwKzZlKs/exec";
+            const GAS_URL = "https://my-tools-proxy.r51yahe123.workers.dev/";
             const counterElement = document.getElementById('site-view-counter');
 
             // 技巧 1：0 秒顯示！先從瀏覽器本地抓取上次的紀錄墊檔
@@ -754,97 +799,98 @@
     </script>
 
     <script src="tools/watermark.js"></script>
-    <script src="tools/Background Removal.js"></script>
-    <script src="tools/Password Leak Checker.js"></script>
-    <script src="tools/Email Obfuscator.js"></script>
-    <script src="tools/Secure URL Message.js"></script>
-    <script src="tools/Signature Pad.js"></script>
-    <script src="tools/Pangu Spacing.js"></script>
-    <script src="tools/Text Decoder.js"></script>
+    <script src="tools/Background-Removal.js"></script>
+    <script src="tools/Password-Leak-Checker.js"></script>
+    <script src="tools/Email-Obfuscator.js"></script>
+    <script src="tools/Secure-URL-Message.js"></script>
+    <script src="tools/Signature-Pad.js"></script>
+    <script src="tools/Pangu-Spacing.js"></script>
+    <script src="tools/Text-Decoder.js"></script>
     <script src="tools/capital-number.js"></script>
     <script src="tools/redundancy-filter.js"></script>
-    <script src="tools/HEIC Converter.js"></script>
-    <script src="tools/Color Picker.js"></script>
-    <script src="tools/url Shortener.js"></script>
-    <script src="tools/Display Tester.js"></script>
-    <script src="tools/Web Whiteboard.js"></script>
-    <script src="tools/Expense Splitter.js"></script>
-    <script src="tools/WiFi QR Gen.js"></script>
-    <script src="tools/Relative Title.js"></script>
-    <script src="tools/Truth or Dare.js"></script>
-    <script src="tools/Comment Picker.js"></script>
-    <script src="tools/Loan Calculator.js"></script>
-    <script src="tools/Compound Interest.js"></script>
-    <script src="tools/Currency Converter.js"></script>
-    <script src="tools/Credit Interest.js"></script>
-    <script src="tools/Timezone Coordinator.js"></script>
-    <script src="tools/Unit Converter.js"></script>
-    <script src="tools/Health Calc.js"></script>
-    <script src="tools/Typing Test.js"></script>
-    <script src="tools/Period Predictor.js"></script>
-    <script src="tools/Alcohol Calculator.js"></script>
-    <script src="tools/Recipe Scaler.js"></script>
-    <script src="tools/VAT Checker.js"></script>
-    <script src="tools/Laundry Symbols.js"></script>
-    <script src="tools/Contrast Checker.js"></script>
-    <script src="tools/Mouse Tester.js"></script>
-    <script src="tools/JSON Tool.js"></script>
-    <script src="tools/Base64 Tool.js"></script>
-    <script src="tools/Pet Age Calc.js"></script>
-    <script src="tools/Calendar Converter.js"></script>
-    <script src="tools/Fortune Simulator.js"></script>
-    <script src="tools/Greeting Gen.js"></script>
-    <script src="tools/Font Viewer.js"></script>
-    <script src="tools/Morse Code.js"></script>
-    <script src="tools/Clipboard Manager.js"></script>
-    <script src="tools/Big Timer.js"></script>
-    <script src="tools/MBTI Guide.js"></script>
-    <script src="tools/Food Roulette.js"></script>
-    <script src="tools/Passport Checker.js"></script>
-    <script src="tools/Taxi Fare.js"></script>
-    <script src="tools/Fuel Splitter.js"></script>
-    <script src="tools/Keyboard Tester.js"></script>
-    <script src="tools/Trash Reminder.js"></script>
-    <script src="tools/Area Converter.js"></script>
-    <script src="tools/Plant Tracker.js"></script>
-    <script src="tools/Distance Meter.js"></script>
-    <script src="tools/Password Entropy.js"></script>
-    <script src="tools/Weather Outfit.js"></script>
-    <script src="tools/Video to GIF.js"></script>
+    <script src="tools/heic-Converter.js"></script>
+    <script src="tools/Color-Picker.js"></script>
+    <script src="tools/url-Shortener.js"></script>
+    <script src="tools/Display-Tester.js"></script>
+    <script src="tools/Web-Whiteboard.js"></script>
+    <script src="tools/Expense-Splitter.js"></script>
+    <script src="tools/WiFi-QR-Gen.js"></script>
+    <script src="tools/Relative-Title.js"></script>
+    <script src="tools/Truth-or-Dare.js"></script>
+    <script src="tools/Comment-Picker.js"></script>
+    <script src="tools/Loan-Calculator.js"></script>
+    <script src="tools/Compound-Interest.js"></script>
+    <script src="tools/Currency-Converter.js"></script>
+    <script src="tools/Credit-Interest.js"></script>
+    <script src="tools/Timezone-Coordinator.js"></script>
+    <script src="tools/Unit-Converter.js"></script>
+    <script src="tools/Health-Calc.js"></script>
+    <script src="tools/Typing-Test.js"></script>
+    <script src="tools/Period-Predictor.js"></script>
+    <script src="tools/Alcohol-Calculator.js"></script>
+    <script src="tools/Recipe-Scaler.js"></script>
+    <script src="tools/VAT-Checker.js"></script>
+    <script src="tools/Laundry-Symbols.js"></script>
+    <script src="tools/Contrast-Checker.js"></script>
+    <script src="tools/Mouse-Tester.js"></script>
+    <script src="tools/JSON-Tool.js"></script>
+    <script src="tools/Base64-Tool.js"></script>
+    <script src="tools/Pet-Age-Calc.js"></script>
+    <script src="tools/Calendar-Converter.js"></script>
+    <script src="tools/Fortune-Simulator.js"></script>
+    <script src="tools/Greeting-Gen.js"></script>
+    <script src="tools/Font-Viewer.js"></script>
+    <script src="tools/Morse-Code.js"></script>
+    <script src="tools/Clipboard-Manager.js"></script>
+    <script src="tools/Big-Timer.js"></script>
+    <script src="tools/MBTI-Guide.js"></script>
+    <script src="tools/Food-Roulette.js"></script>
+    <script src="tools/Passport-Checker.js"></script>
+    <script src="tools/Taxi-Fare.js"></script>
+    <script src="tools/Fuel-Splitter.js"></script>
+    <script src="tools/Keyboard-Tester.js"></script>
+    <script src="tools/Trash-Reminder.js"></script>
+    <script src="tools/Area-Converter.js"></script>
+    <script src="tools/Plant-Tracker.js"></script>
+    <script src="tools/Distance-Meter.js"></script>
+    <script src="tools/Password-Entropy.js"></script>
+    <script src="tools/Weather-Outfit.js"></script>
+    <script src="tools/Video-to-GIF.js"></script>
     <script src="tools/Metronome.js"></script>
-    <script src="tools/Credit Card Validator.js"></script>
-    <script src="tools/Invoice Checker.js"></script>
-    <script src="tools/SOS Location.js"></script>
-    <script src="tools/Screw Size.js"></script>
-    <script src="tools/HTML Entities.js"></script>
-    <script src="tools/Password Gen.js"></script>
-    <script src="tools/Screen Info.js"></script>
-    <script src="tools/MD Preview.js"></script>
-    <script src="tools/Clean URL.js"></script>
-    <script src="tools/FS Clock.js"></script>
-    <script src="tools/Name Strokes.js"></script>
-    <script src="tools/Font Compare.js"></script>
-    <script src="tools/qr Generator.js"></script>
-    <script src="tools/Case Converter.js"></script>
+    <script src="tools/Credit-Card-Validator.js"></script>
+    <script src="tools/Invoice-Checker.js"></script>
+    <script src="tools/VAT-Checker.js"></script>
+    <script src="tools/Company-Search.js"></script>
+    <script src="tools/SOS-Location.js"></script>
+    <script src="tools/Screw-Size.js"></script>
+    <script src="tools/HTML-Entities.js"></script>
+    <script src="tools/Password-Gen.js"></script>
+    <script src="tools/Screen-Info.js"></script>
+    <script src="tools/MD-Preview.js"></script>
+    <script src="tools/Clean-URL.js"></script>
+    <script src="tools/FS-Clock.js"></script>
+    <script src="tools/Name-Strokes.js"></script>
+    <script src="tools/Font-Compare.js"></script>
+    <script src="tools/qr-Generator.js"></script>
+    <script src="tools/Case-Converter.js"></script>
     <script src="tools/Countdown.js"></script>
-    <script src="tools/Line Counter.js"></script>
-    <script src="tools/Random Number.js"></script>
-    <script src="tools/Link Extractor.js"></script>
-    <script src="tools/Math Reference.js"></script>
-    <script src="tools/Temp Converter.js"></script>
-    <script src="tools/Unicode Tool.js"></script>
-    <script src="tools/Eye Tester.js"></script>
+    <script src="tools/Line-Counter.js"></script>
+    <script src="tools/Random-Number.js"></script>
+    <script src="tools/Link-Extractor.js"></script>
+    <script src="tools/Math-Reference.js"></script>
+    <script src="tools/Temp-Converter.js"></script>
+    <script src="tools/Unicode-Tool.js"></script>
+    <script src="tools/Eye-Tester.js"></script>
     <script src="tools/Ruler.js"></script>
-    <script src="tools/Data Mask.js"></script>
-    <script src="tools/Color Lighten.js"></script>
-    <script src="tools/Whitespace Fix.js"></script>
-    <script src="tools/Array Shuffler.js"></script>
-    <script src="tools/Blue Light Filter.js"></script>
-    <script src="tools/Grayscale Tool.js"></script>
-    <script src="tools/IP Checker.js"></script>
+    <script src="tools/Data-Mask.js"></script>
+    <script src="tools/Color-Lighten.js"></script>
+    <script src="tools/Whitespace-Fix.js"></script>
+    <script src="tools/Array-Shuffler.js"></script>
+    <script src="tools/Blue-Light-Filter.js"></script>
+    <script src="tools/Grayscale-Tool.js"></script>
+    <script src="tools/IP-Checker.js"></script>
 
     <script src="app.js"></script>
 </body>
 
 </html>
-
