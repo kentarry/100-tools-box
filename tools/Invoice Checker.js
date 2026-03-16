@@ -657,64 +657,106 @@ window.render_invoiceChecker = function () {
                 } catch (e) { }
             }
 
-            // 由於直接爬取 HTML 被阻擋，改用官方 XML 透過 rss2json 轉換成 JSON
-            const proxyUrls = [
-                'https://api.rss2json.com/v1/api.json?rss_url=https://invoice.etax.nat.gov.tw/invoice.xml'
+            // 建立安全的 Timeout Controller (相容舊版 Safari)
+            const getSignal = () => {
+                if (window.AbortSignal && AbortSignal.timeout) return AbortSignal.timeout(8000);
+                const controller = new AbortController();
+                setTimeout(() => controller.abort(), 8000);
+                return controller.signal;
+            };
+
+            const targetXmlUrl = 'https://invoice.etax.nat.gov.tw/invoice.xml';
+
+            // 策略 1: 透過 rss2json 拿乾淨的 JSON
+            const jsonProxies = [
+                `https://api.rss2json.com/v1/api.json?rss_url=${targetXmlUrl}`
             ];
 
-            for (const pUrl of proxyUrls) {
+            // 策略 2: 透過免費 CORS proxy 代理抓取原始 XML，前端自己 parse
+            const xmlProxies = [
+                'https://api.allorigins.win/raw?url=' + encodeURIComponent(targetXmlUrl),
+                'https://corsproxy.io/?' + encodeURIComponent(targetXmlUrl)
+            ];
+
+            // 執行策略 1 (JSON)
+            for (const pUrl of jsonProxies) {
                 try {
-                    const resp = await fetch(pUrl, { signal: AbortSignal.timeout(8000) });
+                    const resp = await fetch(pUrl, { signal: getSignal() });
                     if (!resp.ok) continue;
                     const json = await resp.json();
                     if (!json || json.status !== 'ok' || !json.items || json.items.length === 0) continue;
 
-                    // cacheKey tw_invoice_latest 取 items[0], tw_invoice_prev 取 items[1]
                     const itemIndex = cacheKey === 'tw_invoice_latest' ? 0 : 1;
                     const targetItem = json.items[itemIndex];
                     if (!targetItem) continue;
 
-                    // 解析標題 (例如 "114年 11~12月")
                     let label = targetItem.title.replace('~', '-');
-                    
-                    // 解析內文 (格式: <p>特別獎：97023797</p>...)
                     const content = targetItem.description || '';
                     const numbers = content.match(/\d{8}|\d{3}/g) || [];
                     
                     if (numbers.length >= 5) {
-                        // 推算領獎期間 (RSS API 沒給期間，我們自己依據發表日期推算)
-                        let drawDate = '-', expireDate = '-';
-                        if (targetItem.pubDate) {
-                            const pDate = new Date(targetItem.pubDate.replace(' ', 'T'));
-                            if (!isNaN(pDate)) {
-                                drawDate = `${pDate.getFullYear()}/${(pDate.getMonth()+1).toString().padStart(2,'0')}/25`;
-                                // 兌獎期限約為開獎後 3 個月 + 10 天左右 (下個月6日起算3個月)，簡化計算
-                                const exp = new Date(pDate);
-                                exp.setMonth(exp.getMonth() + 4);
-                                expireDate = `${exp.getFullYear()}/${exp.getMonth()}/06`;
-                            }
-                        }
-
-                        const resultData = {
-                            label,
-                            special: numbers[0],
-                            grand: numbers[1],
-                            first: [numbers[2], numbers[3], numbers[4]],
-                            extra: numbers.slice(5),
-                            drawDate,
-                            expireDate
-                        };
-
-                        localStorage.setItem(cacheKey, JSON.stringify({
-                            timestamp: new Date().getTime(),
-                            data: resultData
-                        }));
-
-                        return { data: resultData, fromCache: false };
+                        return processAndCacheData(label, numbers, targetItem.pubDate, cacheKey);
                     }
-                } catch (e) { console.error('Fetch error:', e); continue; }
+                } catch (e) { console.warn('JSON Proxy 失敗', e); continue; }
             }
+
+            // 執行策略 2 (XML) - 若 JSON 策略全失敗 (例如 Rate Limit)
+            for (const pUrl of xmlProxies) {
+                try {
+                    const resp = await fetch(pUrl, { signal: getSignal() });
+                    if (!resp.ok) continue;
+                    const xmlText = await resp.text();
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                    
+                    const items = xmlDoc.querySelectorAll('item');
+                    const itemIndex = cacheKey === 'tw_invoice_latest' ? 0 : 1;
+                    if (items.length <= itemIndex) continue;
+                    
+                    const targetItem = items[itemIndex];
+                    let label = targetItem.querySelector('title').textContent.replace('~', '-');
+                    const content = targetItem.querySelector('description').textContent || '';
+                    const numbers = content.match(/\d{8}|\d{3}/g) || [];
+                    const pubDate = targetItem.querySelector('pubDate') ? targetItem.querySelector('pubDate').textContent : null;
+
+                    if (numbers.length >= 5) {
+                        return processAndCacheData(label, numbers, pubDate, cacheKey);
+                    }
+                } catch (e) { console.warn('XML Proxy 失敗', e); continue; }
+            }
+            
             return null;
+
+            // --- 內部處理與快取函式 ---
+            function processAndCacheData(label, numbers, pubDateString, targetCacheKey) {
+                let drawDate = '-', expireDate = '-';
+                if (pubDateString) {
+                    const pDate = new Date(pubDateString.replace(' ', 'T'));
+                    if (!isNaN(pDate)) {
+                        drawDate = `${pDate.getFullYear()}/${(pDate.getMonth() + 1).toString().padStart(2, '0')}/25`;
+                        const exp = new Date(pDate);
+                        exp.setMonth(exp.getMonth() + 4);
+                        expireDate = `${exp.getFullYear()}/${(exp.getMonth() + 1).toString().padStart(2, '0')}/06`;
+                    }
+                }
+
+                const resultData = {
+                    label,
+                    special: numbers[0],
+                    grand: numbers[1],
+                    first: [numbers[2], numbers[3], numbers[4]],
+                    extra: numbers.slice(5),
+                    drawDate,
+                    expireDate
+                };
+
+                localStorage.setItem(targetCacheKey, JSON.stringify({
+                    timestamp: new Date().getTime(),
+                    data: resultData
+                }));
+
+                return { data: resultData, fromCache: false };
+            }
         }
 
         // ===== 渲染號碼 =====
