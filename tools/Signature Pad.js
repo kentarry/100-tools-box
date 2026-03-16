@@ -1,33 +1,54 @@
 window.render_signaturePad = function () {
+    // 確保 container 存在 (假設 container 是全域變數或已在外部定義)
+    if (!typeof container !== 'undefined' && !container) {
+        console.error("找不到渲染容器");
+        return;
+    }
+
+    // 1. 注入更具現代感的 UI
     container.innerHTML = `
-        <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h3 class="text-xl font-bold text-slate-800 mb-2">✍️ 手寫簽名產生器</h3>
-            <p class="text-slate-500 text-sm mb-4">在下方空白處簽名，即可下載去背透明圖檔，方便貼入 PDF 或合約中。</p>
+        <div class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-lg border border-slate-100 font-sans">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-2xl">✍️</span>
+                <h3 class="text-xl font-extrabold text-slate-800">手寫簽名產生器</h3>
+            </div>
+            <p class="text-slate-500 text-sm mb-5">在下方空白處簽名，即可下載去背透明圖檔，方便貼入 PDF 或數位合約中。</p>
             
-            <div class="mb-4 flex gap-4 items-center bg-slate-50 p-3 rounded-lg border border-slate-100">
-                <div>
-                    <label class="text-sm font-bold text-slate-700 block mb-1">筆刷顏色</label>
-                    <input type="color" id="signColor" value="#000000" class="h-8 w-16 cursor-pointer">
+            <div class="mb-5 flex flex-wrap gap-4 items-center bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div class="flex flex-col">
+                    <label class="text-xs font-bold text-slate-600 mb-1 uppercase tracking-wider">筆刷顏色</label>
+                    <input type="color" id="signColor" value="#0f172a" class="h-9 w-16 cursor-pointer rounded border-0 bg-transparent p-0">
                 </div>
-                <div class="flex-1">
-                    <label class="text-sm font-bold text-slate-700 block mb-1">筆刷粗細 (<span id="signSizeVal">3</span>px)</label>
-                    <input type="range" id="signSize" min="1" max="10" value="3" class="w-full cursor-pointer">
+                <div class="flex-1 min-w-[150px]">
+                    <label class="text-xs font-bold text-slate-600 mb-1 flex justify-between uppercase tracking-wider">
+                        <span>筆刷粗細</span>
+                        <span class="text-indigo-600 font-bold"><span id="signSizeVal">4</span>px</span>
+                    </label>
+                    <input type="range" id="signSize" min="1" max="15" value="4" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
                 </div>
-                <button id="signClearBtn" class="mt-5 px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-lg transition">清除重寫</button>
+                <button id="signClearBtn" class="mt-4 sm:mt-0 px-4 py-2 bg-white hover:bg-red-50 text-red-500 border border-red-200 font-semibold rounded-lg transition-colors flex items-center gap-1 shadow-sm text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    清除重寫
+                </button>
             </div>
 
-            <div class="border-2 border-dashed border-slate-300 rounded-lg overflow-hidden bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAACVJREFUKFNjZCASMDKgAnv37v3/n52dHUWjsYEYw8QZ0OQoGAgAF2wc06hKxkYAAAAASUVORK5CYII=')]">
-                <canvas id="signCanvas" width="600" height="300" class="w-full bg-transparent cursor-crosshair touch-none"></canvas>
+            <div class="relative border-2 border-dashed border-slate-300 hover:border-indigo-400 transition-colors rounded-xl overflow-hidden bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAACVJREFUKFNjZCASMDKgAnv37v3/n52dHUWjsYEYw8QZ0OQoGAgAF2wc06hKxkYAAAAASUVORK5CYII=')]">
+                <canvas id="signCanvas" width="1200" height="600" class="w-full h-auto aspect-[2/1] bg-transparent cursor-crosshair touch-none"></canvas>
             </div>
             
-            <button id="signDownloadBtn" class="w-full mt-4 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-lg shadow-md transition text-lg">
-                ⬇️ 下載透明簽名圖檔
+            <button id="signDownloadBtn" class="w-full mt-6 py-3.5 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                下載透明簽名圖檔
             </button>
         </div>
     `;
 
-    setTimeout(() => {
+    // 2. 使用 requestAnimationFrame 確保 DOM 已經真正渲染完畢
+    requestAnimationFrame(() => {
         const canvas = document.getElementById('signCanvas');
+        // 防呆：如果工具被快速切換導致 canvas 不存在，則中斷執行
+        if (!canvas) return;
+
         const ctx = canvas.getContext('2d');
         const colorInput = document.getElementById('signColor');
         const sizeInput = document.getElementById('signSize');
@@ -38,73 +59,101 @@ window.render_signaturePad = function () {
         let isDrawing = false;
         let lastX = 0;
         let lastY = 0;
+        let hasDrawn = false; // 紀錄是否有下筆
 
-        // 確保畫布尺寸正確對應 CSS 顯示尺寸
-        function resizeCanvas() {
-            const rect = canvas.parentElement.getBoundingClientRect();
-            canvas.width = rect.width;
-            // 保持原本的寬高比例或固定高度
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        function draw(e) {
-            if (!isDrawing) return;
-            e.preventDefault();
-
+        // 取得正確的座標 (處理 CSS 縮放與內部解析度差異)
+        function getCoordinates(e) {
             const rect = canvas.getBoundingClientRect();
-            // 支援滑鼠與觸控
             const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
             const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
 
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
+            // 計算縮放比例：內部解析度 (1200x600) / 實際顯示尺寸
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
+        }
+
+        // 開始繪圖
+        function startDrawing(e) {
+            isDrawing = true;
+            hasDrawn = true;
+            const coords = getCoordinates(e);
+            lastX = coords.x;
+            lastY = coords.y;
+
+            // 畫一個圓點，讓使用者即使只點一下也能留下痕跡
+            ctx.beginPath();
+            ctx.arc(lastX, lastY, sizeInput.value / 2, 0, Math.PI * 2);
+            ctx.fillStyle = colorInput.value;
+            ctx.fill();
 
             ctx.beginPath();
             ctx.moveTo(lastX, lastY);
-            ctx.lineTo(x, y);
+        }
+
+        // 繪圖中
+        function draw(e) {
+            if (!isDrawing) return;
+            e.preventDefault(); // 防止手機端滑動頁面
+
+            const coords = getCoordinates(e);
+
+            ctx.lineTo(coords.x, coords.y);
             ctx.strokeStyle = colorInput.value;
             ctx.lineWidth = sizeInput.value;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.stroke();
 
-            lastX = x;
-            lastY = y;
+            lastX = coords.x;
+            lastY = coords.y;
         }
 
-        canvas.addEventListener('mousedown', (e) => {
-            isDrawing = true;
-            const rect = canvas.getBoundingClientRect();
-            lastX = e.clientX - rect.left;
-            lastY = e.clientY - rect.top;
-        });
+        // 結束繪圖
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // 綁定滑鼠事件
+        canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', () => isDrawing = false);
-        canvas.addEventListener('mouseout', () => isDrawing = false);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
 
-        // 觸控支援
-        canvas.addEventListener('touchstart', (e) => {
-            isDrawing = true;
-            const rect = canvas.getBoundingClientRect();
-            lastX = e.touches[0].clientX - rect.left;
-            lastY = e.touches[0].clientY - rect.top;
-        }, { passive: false });
+        // 綁定觸控事件 (加入 passive: false 以允許 e.preventDefault())
+        canvas.addEventListener('touchstart', startDrawing, { passive: false });
         canvas.addEventListener('touchmove', draw, { passive: false });
-        canvas.addEventListener('touchend', () => isDrawing = false);
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchcancel', stopDrawing);
 
-        sizeInput.addEventListener('input', () => sizeVal.textContent = sizeInput.value);
+        // 筆刷粗細連動顯示
+        sizeInput.addEventListener('input', () => {
+            sizeVal.textContent = sizeInput.value;
+        });
 
+        // 清除畫布
         clearBtn.addEventListener('click', () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hasDrawn = false; // 重置繪圖狀態
         });
 
+        // 下載圖檔
         downloadBtn.addEventListener('click', () => {
-            // 檢查是否全白/全透明 (這裡簡化，直接下載)
+            if (!hasDrawn) {
+                alert("請先在畫布上簽名後再下載喔！");
+                return;
+            }
+
             const link = document.createElement('a');
-            link.download = `signature_${Date.now()}.png`;
+            // 使用更易讀的時間戳記作為檔名
+            const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+            link.download = `Signature_${dateStr}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         });
-    }, 0);
+    });
 };
