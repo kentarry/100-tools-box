@@ -509,8 +509,42 @@ window.render_invoiceChecker = function () {
     `;
 
     setTimeout(() => {
-        // ===== 中獎號碼資料庫（依民國年-月份） =====
-        let invoiceDB = {};
+        // ===== 綁定 DOM 元素 =====
+        const periodSelect = document.getElementById('invPeriodSelect');
+        const invStatusTag = document.getElementById('invStatusTag');
+        const invStatusText = document.getElementById('invStatusText');
+        const invPeriodInfo = document.getElementById('invPeriodInfo');
+        const invDeadlineBar = document.getElementById('invDeadlineBar');
+        const invDeadlineDate = document.getElementById('invDeadlineDate');
+        const invCountdown = document.getElementById('invCountdown');
+        
+        const invNumbersPanel = document.getElementById('invNumbersPanel');
+        const invFastPanel = document.getElementById('invFastPanel');
+        const invInputFast = document.getElementById('invInputFast');
+        const invResultFast = document.getElementById('invResultFast');
+        
+        const invPrecisePanel = document.getElementById('invPrecisePanel');
+        const invInputPrecise = document.getElementById('invInputPrecise');
+        const invCheckBtnPrecise = document.getElementById('invCheckBtnPrecise');
+        const invResultPrecise = document.getElementById('invResultPrecise');
+        
+        const invBatchPanel = document.getElementById('invBatchPanel');
+        const invBatchInput = document.getElementById('invBatchInput');
+        const invBatchBtn = document.getElementById('invBatchBtn');
+        const invBatchResults = document.getElementById('invBatchResults');
+        const invStats = document.getElementById('invStats');
+
+        // ===== 內建預設資料庫 (作為即時顯示的 Fallback) =====
+        const defaultDB = {
+            '11412': { label: '114年11-12月', special: '97023797', grand: '00507588', first: ['92377231', '05232592', '78125249'], extra: [], drawDate: '2026/01/25', expireDate: '2026/07/06' },
+            '11410': { label: '114年09-10月', special: '25834483', grand: '46587380', first: ['41016094', '98081574', '07309261'], extra: [], drawDate: '2025/11/25', expireDate: '2026/05/06' },
+            '11408': { label: '114年07-08月', special: '84226804', grand: '51509866', first: ['43074088', '22870220', '38253117'], extra: [], drawDate: '2025/09/25', expireDate: '2026/03/06' },
+            '11406': { label: '114年05-06月', special: '30099589', grand: '05579058', first: ['49912232', '73145004', '99174704'], extra: [], drawDate: '2025/07/25', expireDate: '2026/01/06' },
+            '11404': { label: '114年03-04月', special: '66399569', grand: '64808075', first: ['04322277', '07903676', '98883497'], extra: [], drawDate: '2025/05/25', expireDate: '2025/11/06' },
+            '11402': { label: '114年01-02月', special: '19444064', grand: '37166026', first: ['78394633', '26503878', '39200954'], extra: [], drawDate: '2025/03/25', expireDate: '2025/09/06' }
+        };
+
+        let invoiceDB = JSON.parse(JSON.stringify(defaultDB));
         let currentKey = null;
         let currentData = null;
         let isLive = false;
@@ -520,13 +554,57 @@ window.render_invoiceChecker = function () {
         // ===== 解析民國日期字串 =====
         function parseROCDate(rocDateStr) {
             const m = rocDateStr.match(/(\d{3})年(\d{2})月(\d{2})日/);
-            if (!m) return null;
+            if (!m) {
+                // 如果傳入的是 '2026/01/25' 格式
+                const stdDate = new Date(rocDateStr.replace(/-/g, '/'));
+                if (!isNaN(stdDate)) return stdDate;
+                return null;
+            }
             const year = parseInt(m[1]) + 1911;
-            return new Date(`${year}-${m[2]}-${m[3]}T23:59:59`);
+            return new Date(`${year}/${m[2]}/${m[3]} 23:59:59`);
+        }
+
+        // ===== 根據當前日期自動選擇期別 =====
+        function getRecommendedPeriod() {
+            try {
+                const now = new Date();
+                const sortedKeys = Object.keys(invoiceDB).sort((a, b) => b.localeCompare(a));
+                for (const key of sortedKeys) {
+                    const data = invoiceDB[key];
+                    if (!data) continue;
+                    let drawDate = parseROCDate(data.drawDate);
+                    let expireDate = parseROCDate(data.expireDate);
+                    if (drawDate && expireDate && !isNaN(drawDate) && !isNaN(expireDate) && now >= drawDate && now <= expireDate) {
+                        return key;
+                    }
+                }
+                return sortedKeys[0];
+            } catch (e) {
+                console.error(e);
+                return Object.keys(invoiceDB)[0];
+            }
         }
 
         // ===== 建立期別下拉 =====
-        // 留空，由 init() 動態產生
+        function buildPeriodSelect() {
+            try {
+                periodSelect.innerHTML = '';
+                const sortedKeys = Object.keys(invoiceDB).sort((a, b) => b.localeCompare(a));
+                sortedKeys.forEach(key => {
+                    const d = invoiceDB[key];
+                    if (!d) return;
+                    let expire = parseROCDate(d.expireDate);
+                    const isExpired = (expire && !isNaN(expire)) ? (new Date() > expire) : false;
+                    const opt = document.createElement('option');
+                    opt.value = key;
+                    opt.textContent = (d.label || key) + (isExpired ? ' (已截止)' : '');
+                    if (key === currentKey) opt.selected = true;
+                    periodSelect.appendChild(opt);
+                });
+            } catch (e) {
+                console.error('buildPeriodSelect error:', e);
+            }
+        }
 
         periodSelect.addEventListener('change', () => {
             currentKey = periodSelect.value;
@@ -566,50 +644,58 @@ window.render_invoiceChecker = function () {
             });
         });
 
-        // ===== 下載並解析單頁期別資料 =====
-        async function fetchPeriodData(url) {
+        // ===== 下載並解析單頁期別資料 (附帶 24 小時緩存) =====
+        async function fetchPeriodData(url, cacheKey) {
+            const cachedSt = localStorage.getItem(cacheKey);
+            if (cachedSt) {
+                try {
+                    const cacheData = JSON.parse(cachedSt);
+                    const now = new Date().getTime();
+                    if (now - cacheData.timestamp < 86400000) {
+                        return { data: cacheData.data, fromCache: true };
+                    }
+                } catch (e) { }
+            }
+
+            // 由於直接爬取 HTML 被阻擋，改用官方 XML 透過 rss2json 轉換成 JSON
             const proxyUrls = [
-                'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
-                'https://corsproxy.io/?' + encodeURIComponent(url)
+                'https://api.rss2json.com/v1/api.json?rss_url=https://invoice.etax.nat.gov.tw/invoice.xml'
             ];
 
             for (const pUrl of proxyUrls) {
                 try {
-                    const resp = await fetch(pUrl, { signal: AbortSignal.timeout(6000) });
+                    const resp = await fetch(pUrl, { signal: AbortSignal.timeout(8000) });
                     if (!resp.ok) continue;
-                    const html = await resp.text();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
+                    const json = await resp.json();
+                    if (!json || json.status !== 'ok' || !json.items || json.items.length === 0) continue;
 
-                    let label = '最新期別';
-                    const titleMatch = html.match(/>(\d{3}年\d{2}-\d{2}月)</);
-                    if (titleMatch) label = titleMatch[1];
-                    else {
-                        const activeLink = doc.querySelector('a.active');
-                        if (activeLink && activeLink.textContent.includes('月')) label = activeLink.textContent.replace('中獎號碼單', '').trim();
-                    }
+                    // cacheKey tw_invoice_latest 取 items[0], tw_invoice_prev 取 items[1]
+                    const itemIndex = cacheKey === 'tw_invoice_latest' ? 0 : 1;
+                    const targetItem = json.items[itemIndex];
+                    if (!targetItem) continue;
 
-                    let numbers = [];
-                    const numNodes = doc.querySelectorAll('.etw-tbiggest .font-weight-bold');
-                    if (numNodes.length > 0) {
-                        numbers = Array.from(numNodes).map(n => n.textContent.replace(/\D/g, '')).filter(n => n.length === 8 || n.length === 3);
-                    } else {
-                        const allText = doc.body.innerText || doc.body.textContent || '';
-                        numbers = allText.match(/\b\d{8}\b/g) || [];
-                        const extraMatches = allText.match(/\b\d{3}\b/g) || [];
-                        numbers = numbers.concat(extraMatches);
-                    }
-
+                    // 解析標題 (例如 "114年 11~12月")
+                    let label = targetItem.title.replace('~', '-');
+                    
+                    // 解析內文 (格式: <p>特別獎：97023797</p>...)
+                    const content = targetItem.description || '';
+                    const numbers = content.match(/\d{8}|\d{3}/g) || [];
+                    
                     if (numbers.length >= 5) {
+                        // 推算領獎期間 (RSS API 沒給期間，我們自己依據發表日期推算)
                         let drawDate = '-', expireDate = '-';
-                        const cleanText = html.replace(/<[^>]+>/g, '');
-                        const dateMatch = cleanText.match(/領獎期間自(\d{3}年\d{2}月\d{2}日)起至(\d{3}年\d{2}月\d{2}日)止/);
-                        if (dateMatch) {
-                            drawDate = dateMatch[1];
-                            expireDate = dateMatch[2];
+                        if (targetItem.pubDate) {
+                            const pDate = new Date(targetItem.pubDate.replace(' ', 'T'));
+                            if (!isNaN(pDate)) {
+                                drawDate = `${pDate.getFullYear()}/${(pDate.getMonth()+1).toString().padStart(2,'0')}/25`;
+                                // 兌獎期限約為開獎後 3 個月 + 10 天左右 (下個月6日起算3個月)，簡化計算
+                                const exp = new Date(pDate);
+                                exp.setMonth(exp.getMonth() + 4);
+                                expireDate = `${exp.getFullYear()}/${exp.getMonth()}/06`;
+                            }
                         }
 
-                        return {
+                        const resultData = {
                             label,
                             special: numbers[0],
                             grand: numbers[1],
@@ -618,40 +704,58 @@ window.render_invoiceChecker = function () {
                             drawDate,
                             expireDate
                         };
+
+                        localStorage.setItem(cacheKey, JSON.stringify({
+                            timestamp: new Date().getTime(),
+                            data: resultData
+                        }));
+
+                        return { data: resultData, fromCache: false };
                     }
-                } catch (e) { continue; }
+                } catch (e) { console.error('Fetch error:', e); continue; }
             }
             return null;
         }
 
         // ===== 渲染號碼 =====
         function renderNumbers() {
-            const d = currentData;
-            if (!d) return;
-            invNumbersPanel.innerHTML = `
-                <div class="inv-num-group">
-                    <div class="inv-num-label">🥇 特別獎</div>
-                    <div class="inv-num-value">${d.special}</div>
-                    <div class="inv-num-prize">8 碼全中 → $10,000,000</div>
-                </div>
-                <div class="inv-num-group">
-                    <div class="inv-num-label">🥈 特獎</div>
-                    <div class="inv-num-value">${d.grand}</div>
-                    <div class="inv-num-prize">8 碼全中 → $2,000,000</div>
-                </div>
-                <div class="inv-num-group">
-                    <div class="inv-num-label">🥉 頭獎 (3 組)</div>
-                    ${d.first.map(n => `<div class="inv-num-value small">${n}</div>`).join('')}
-                    <div class="inv-num-prize">末 3~8 碼 → $200 ~ $200,000</div>
-                </div>
-                ${d.extra && d.extra.length > 0 ? `
+            try {
+                const d = currentData;
+                if (!d) {
+                    invNumbersPanel.innerHTML = '<div style="padding:20px;text-align:center;">無此期別資料</div>';
+                    return;
+                }
+                const firstArr = Array.isArray(d.first) ? d.first : [];
+                const extraArr = Array.isArray(d.extra) ? d.extra : [];
+
+                invNumbersPanel.innerHTML = `
                     <div class="inv-num-group">
-                        <div class="inv-num-label">🌟 增開六獎 (${d.extra.length} 組)</div>
-                        ${d.extra.map(n => `<div class="inv-num-value small" style="font-size:20px;">${n}</div>`).join('')}
-                        <div class="inv-num-prize">末 3 碼 → $200</div>
+                        <div class="inv-num-label">🥇 特別獎</div>
+                        <div class="inv-num-value">${d.special || '無'}</div>
+                        <div class="inv-num-prize">8 碼全中 → $10,000,000</div>
                     </div>
-                ` : ''}
-            `;
+                    <div class="inv-num-group">
+                        <div class="inv-num-label">🥈 特獎</div>
+                        <div class="inv-num-value">${d.grand || '無'}</div>
+                        <div class="inv-num-prize">8 碼全中 → $2,000,000</div>
+                    </div>
+                    <div class="inv-num-group">
+                        <div class="inv-num-label">🥉 頭獎 (${firstArr.length} 組)</div>
+                        ${firstArr.map(n => `<div class="inv-num-value small">${n}</div>`).join('')}
+                        <div class="inv-num-prize">末 3~8 碼 → $200 ~ $200,000</div>
+                    </div>
+                    ${extraArr.length > 0 ? `
+                        <div class="inv-num-group">
+                            <div class="inv-num-label">🌟 增開六獎 (${extraArr.length} 組)</div>
+                            ${extraArr.map(n => `<div class="inv-num-value small" style="font-size:20px;">${n}</div>`).join('')}
+                            <div class="inv-num-prize">末 3 碼 → $200</div>
+                        </div>
+                    ` : ''}
+                `;
+            } catch (e) {
+                console.error("renderNumbers fail", e);
+                invNumbersPanel.innerHTML = '<div style="padding:20px;color:red;text-align:center;">繪製版面失敗，請檢查資料夾。</div>';
+            }
         }
 
         // ===== 更新兌獎期限 =====
@@ -730,8 +834,8 @@ window.render_invoiceChecker = function () {
                 }
 
                 // 徹底保證清除事件迴圈殘影
-                setTimeout(() => { 
-                    invInputFast.value = ''; 
+                setTimeout(() => {
+                    invInputFast.value = '';
                 }, 10);
             }
         });
@@ -794,59 +898,104 @@ window.render_invoiceChecker = function () {
             document.getElementById('invStatPrize').textContent = '$' + totalPrize.toLocaleString();
         });
 
-        // ===== 初始化：抓取即時數據 =====
+        // ===== 初始化：即時顯示內建/快取，背景靜默更新 =====
         async function init() {
-            invStatusTag.className = 'inv-status-tag offline';
-            invStatusText.textContent = '抓取即時數據中...';
-            invNumbersPanel.innerHTML = '<div class="inv-num-loading"><div class="ld-spinner"></div><br>即時與財政部連線中，請稍候...</div>';
-            periodSelect.innerHTML = '<option>載入中...</option>';
-            periodSelect.disabled = true;
+            try {
+                // 強制覆寫原本的 loading 空白畫面
+                if (invNumbersPanel.innerHTML.includes('ld-spinner')) {
+                    invNumbersPanel.innerHTML = '<div style="padding:20px;text-align:center;">載入中...</div>';
+                }
 
-            const [dataLatest, dataPrev] = await Promise.all([
-                fetchPeriodData('https://invoice.etax.nat.gov.tw/index.html'),
-                fetchPeriodData('https://invoice.etax.nat.gov.tw/lastNumber.html')
-            ]);
+                // 1. 先載入內建 Local DB + 快取
+                const cachedLatest = localStorage.getItem('tw_invoice_latest');
+                const cachedPrev = localStorage.getItem('tw_invoice_prev');
+                let hasCache = false;
 
-            invoiceDB = {};
-            if (dataLatest) invoiceDB['latest'] = dataLatest;
-            if (dataPrev) invoiceDB['prev'] = dataPrev;
+                if (cachedLatest || cachedPrev) {
+                    try {
+                        if (cachedLatest) {
+                            const parsed = JSON.parse(cachedLatest);
+                            invoiceDB['latest_cache'] = parsed.data;
+                            hasCache = true;
+                        }
+                        if (cachedPrev) {
+                            const parsed = JSON.parse(cachedPrev);
+                            invoiceDB['prev_cache'] = parsed.data;
+                            hasCache = true;
+                        }
+                    } catch (e) { }
+                }
 
-            const sortedKeys = Object.keys(invoiceDB);
-
-            if (sortedKeys.length > 0) {
-                invStatusTag.className = 'inv-status-tag live';
-                invStatusText.textContent = '即時連線成功';
-                invPeriodInfo.textContent = '來源：財政部稅務入口網';
+                // 初始顯示
+                currentKey = getRecommendedPeriod();
+                currentData = invoiceDB[currentKey] || invoiceDB[Object.keys(invoiceDB)[0]];
                 
-                periodSelect.innerHTML = '';
-                periodSelect.disabled = false;
-                
-                sortedKeys.forEach(key => {
-                    const d = invoiceDB[key];
-                    const opt = document.createElement('option');
-                    opt.value = key;
-                    
-                    const expire = parseROCDate(d.expireDate);
-                    const isExpired = expire ? (new Date() > expire) : false;
-                    
-                    opt.textContent = d.label + (isExpired ? ' (已截止)' : '');
-                    periodSelect.appendChild(opt);
-                });
+                // 最後防線：如果 currentData 還是空的，強制套用預設資料庫第一筆
+                if (!currentData) {
+                    currentData = Object.values(defaultDB)[0];
+                }
 
-                currentKey = sortedKeys[0];
-                currentData = invoiceDB[currentKey];
+                buildPeriodSelect();
                 renderNumbers();
                 updateDeadline();
-            } else {
-                invStatusTag.className = 'inv-status-tag offline';
-                invStatusText.textContent = '連線失敗';
-                invPeriodInfo.textContent = '無法取得最新號碼';
-                invNumbersPanel.innerHTML = '<div style="color:#e11d48;padding:20px;text-align:center;font-weight:700;"><strong>⚠️ 載入失敗</strong><br><br>無法連線至財政部稅務入口網，或來源格式已變更。<br>請稍後重新整理頁面再試。</div>';
-                periodSelect.innerHTML = '<option>無資料</option>';
+
+                invStatusTag.className = hasCache ? 'inv-status-tag live' : 'inv-status-tag offline';
+                invStatusText.textContent = hasCache ? '載入本機快取' : '載入預設資料';
+                invPeriodInfo.textContent = '背景同步最新號碼中...';
+
+                // 2. 背景靜默抓取最新資料 (不阻塞 UI)
+                try {
+                    // rss2json 單次請求即包含最新和上一期
+                    const resLatest = await fetchPeriodData('dummy_url', 'tw_invoice_latest');
+                    const resPrev = await fetchPeriodData('dummy_url', 'tw_invoice_prev');
+
+                    let updated = false;
+
+                    if (resLatest && resLatest.data) {
+                        invoiceDB['latest_fetched'] = resLatest.data;
+                        updated = true;
+                    }
+                    if (resPrev && resPrev.data) {
+                        invoiceDB['prev_fetched'] = resPrev.data;
+                        updated = true;
+                    }
+
+                    if (updated) {
+                        invStatusTag.className = 'inv-status-tag live';
+                        invStatusText.textContent = '已同步最新號碼 📡';
+                        invPeriodInfo.textContent = '來源：財政部稅務入口網';
+
+                        // 重新評估並刷新 UI
+                        const newKey = getRecommendedPeriod();
+                        // 若當前使用者沒有手動切換期別，自動刷新顯示最新抓取的資料
+                        if (currentKey === newKey || currentKey === 'latest_cache' || currentKey === 'prev_cache') {
+                            currentKey = newKey;
+                            currentData = invoiceDB[currentKey];
+                            buildPeriodSelect();
+                            renderNumbers();
+                            updateDeadline();
+                        } else {
+                            buildPeriodSelect(); // 僅更新下拉選單內容
+                        }
+                    } else if (!hasCache) {
+                        invStatusTag.className = 'inv-status-tag offline';
+                        invStatusText.textContent = '使用內建資料';
+                        invPeriodInfo.textContent = '連線超時，使用預設資料庫';
+                    } else {
+                        invStatusTag.className = 'inv-status-tag live';
+                        invStatusText.textContent = '快取資料為最新';
+                        invPeriodInfo.textContent = '無需重新下載';
+                    }
+                } catch (e) {
+                    // 背景抓取失敗不影響使用者操作
+                }
+            } catch (errorOuter) {
+                console.error("Init Error", errorOuter);
+                invNumbersPanel.innerHTML = '<div style="padding:20px;color:#e11d48;text-align:center;">初始化發生錯誤，請重新清除瀏覽器快取。<br>' + errorOuter.message + '</div>';
             }
         }
 
         init();
 
-    }, 0);
+    }, 50); // 加入微小延遲確保 DOM 都繪製完成
 };
