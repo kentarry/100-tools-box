@@ -564,21 +564,34 @@ window.render_invoiceChecker = function () {
             return new Date(`${year}/${m[2]}/${m[3]} 23:59:59`);
         }
 
-        // ===== 根據當前日期自動選擇期別 =====
+        // ===== 萃取並去重複、排序所有的期別資料 =====
+        function getUniqueSortedPeriods() {
+            const uniqueMap = new Map();
+            for (const key in invoiceDB) {
+                const data = invoiceDB[key];
+                if (!data || !data.label) continue;
+                
+                // 標準化標題，移除空白並強制補零以利排序 (例如 "114年9-10月" -> "114年09-10月")
+                let normalizedLabel = data.label.replace(/\s+/g, '');
+                normalizedLabel = normalizedLabel.replace(/年(\d)-/, '年0$1-');
+                
+                // 保存排序鍵與資料
+                uniqueMap.set(normalizedLabel, { originalKey: key, data: data, sortKey: normalizedLabel });
+            }
+            
+            // 將 Map 轉換為 Array，並依照 label 名稱降冪排序 (年份大、月份大 的排上面)
+            const sortedArray = Array.from(uniqueMap.values()).sort((a, b) => {
+                return b.sortKey.localeCompare(a.sortKey);
+            });
+            return sortedArray;
+        }
+
+        // ===== 永遠預設選擇最新一期 =====
         function getRecommendedPeriod() {
             try {
-                const now = new Date();
-                const sortedKeys = Object.keys(invoiceDB).sort((a, b) => b.localeCompare(a));
-                for (const key of sortedKeys) {
-                    const data = invoiceDB[key];
-                    if (!data) continue;
-                    let drawDate = parseROCDate(data.drawDate);
-                    let expireDate = parseROCDate(data.expireDate);
-                    if (drawDate && expireDate && !isNaN(drawDate) && !isNaN(expireDate) && now >= drawDate && now <= expireDate) {
-                        return key;
-                    }
-                }
-                return sortedKeys[0];
+                const sortedPeriods = getUniqueSortedPeriods();
+                if (sortedPeriods.length === 0) return Object.keys(invoiceDB)[0];
+                return sortedPeriods[0].originalKey; // 直接回傳排序後的最上面一筆 (最新的)
             } catch (e) {
                 console.error(e);
                 return Object.keys(invoiceDB)[0];
@@ -589,16 +602,23 @@ window.render_invoiceChecker = function () {
         function buildPeriodSelect() {
             try {
                 periodSelect.innerHTML = '';
-                const sortedKeys = Object.keys(invoiceDB).sort((a, b) => b.localeCompare(a));
-                sortedKeys.forEach(key => {
-                    const d = invoiceDB[key];
-                    if (!d) return;
+                const sortedPeriods = getUniqueSortedPeriods();
+                
+                // 確保如果有找到目前正在看的資料對應的標籤，要讓他選中
+                let currentNormalizedLabel = currentData && currentData.label ? currentData.label.replace(/\s+/g, '') : null;
+
+                sortedPeriods.forEach(item => {
+                    const d = item.data;
                     let expire = parseROCDate(d.expireDate);
                     const isExpired = (expire && !isNaN(expire)) ? (new Date() > expire) : false;
                     const opt = document.createElement('option');
-                    opt.value = key;
-                    opt.textContent = (d.label || key) + (isExpired ? ' (已截止)' : '');
-                    if (key === currentKey) opt.selected = true;
+                    opt.value = item.originalKey;
+                    opt.textContent = d.label + (isExpired ? ' (已截止)' : '');
+                    
+                    const itemNormalizedLabel = d.label.replace(/\s+/g, '');
+                    if (itemNormalizedLabel === currentNormalizedLabel) {
+                        opt.selected = true;
+                    }
                     periodSelect.appendChild(opt);
                 });
             } catch (e) {
@@ -1007,17 +1027,23 @@ window.render_invoiceChecker = function () {
                         invStatusText.textContent = '已同步最新號碼 📡';
                         invPeriodInfo.textContent = '來源：財政部稅務入口網';
 
-                        // 重新評估並刷新 UI
+                        // 重新評估最新的預設期別
                         const newKey = getRecommendedPeriod();
-                        // 若當前使用者沒有手動切換期別，自動刷新顯示最新抓取的資料
-                        if (currentKey === newKey || currentKey === 'latest_cache' || currentKey === 'prev_cache') {
+                        
+                        // 我們強制切換到最新抓取的資料 (因為用戶可能本來停在內建的最新期別，抓完後標籤一樣但 key 變成了 fetched)
+                        // 判別方式：只要當前選中的標籤等於新抓取最新期的標籤，就自動刷新
+                        const sorted = getUniqueSortedPeriods();
+                        const newLatestLabel = sorted.length > 0 ? sorted[0].sortKey : null;
+                        const currLabel = currentData && currentData.label ? currentData.label.replace(/\s+/g, '').replace(/年(\d)-/, '年0$1-') : null;
+
+                        if (newLatestLabel === currLabel || currentKey === 'latest_cache' || currentKey === 'tw_invoice_latest') {
                             currentKey = newKey;
                             currentData = invoiceDB[currentKey];
                             buildPeriodSelect();
                             renderNumbers();
                             updateDeadline();
                         } else {
-                            buildPeriodSelect(); // 僅更新下拉選單內容
+                            buildPeriodSelect(); // 僅更新下拉選單內容不切除非最新期的畫面
                         }
                     } else if (!hasCache) {
                         invStatusTag.className = 'inv-status-tag offline';
