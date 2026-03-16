@@ -1,5 +1,5 @@
 window.render_watermark = function () {
-    // 注入專屬 CSS 與 HTML 結構 (包含四大分頁與刪除功能)
+    // 注入專屬 CSS 與 HTML 結構 (包含五大分頁與刪除功能)
     container.innerHTML = `
         <style>
             .wm-app { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; --primary: #3b82f6; --primary-hover: #2563eb; --danger: #ef4444; --danger-hover: #dc2626; --warning: #f59e0b; --warning-hover: #d97706; --bg: #f8fafc; --border: #e2e8f0; --text: #334155; }
@@ -7,7 +7,7 @@ window.render_watermark = function () {
             
             /* 分頁導覽列樣式 */
             .wm-tabs { display: flex; background: #f1f5f9; border-radius: 12px; padding: 4px; gap: 4px; flex-wrap: wrap; }
-            .wm-tab { flex: 1; text-align: center; padding: 10px 4px; border-radius: 8px; cursor: pointer; font-weight: bold; color: #64748b; transition: all 0.3s ease; border: none; background: transparent; font-size: 0.9rem; min-width: 80px; }
+            .wm-tab { flex: 1; text-align: center; padding: 10px 2px; border-radius: 8px; cursor: pointer; font-weight: bold; color: #64748b; transition: all 0.3s ease; border: none; background: transparent; font-size: 0.85rem; min-width: 65px; }
             .wm-tab.active { background: #ffffff; color: var(--primary); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
             .wm-tab:hover:not(.active) { color: #334155; background: #e2e8f0; }
             .wm-panel { display: none; flex-direction: column; gap: 15px; animation: fadeIn 0.3s ease; }
@@ -28,6 +28,8 @@ window.render_watermark = function () {
             .wm-btn.danger:hover { background-color: var(--danger-hover); }
             .wm-btn.warning { background-color: var(--warning); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); color: #fff; }
             .wm-btn.warning:hover { background-color: var(--warning-hover); }
+            .wm-btn.purple { background-color: #8b5cf6; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3); }
+            .wm-btn.purple:hover { background-color: #7c3aed; }
             
             .wm-preview-box { background-image: repeating-linear-gradient(45deg, #f1f5f9 25%, transparent 25%, transparent 75%, #f1f5f9 75%, #f1f5f9), repeating-linear-gradient(45deg, #f1f5f9 25%, #ffffff 25%, #ffffff 75%, #f1f5f9 75%, #f1f5f9); background-position: 0 0, 10px 10px; background-size: 20px 20px; border: 1px solid var(--border); border-radius: 12px; min-height: 500px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 15px; position: relative; }
             .wm-row { display: flex; gap: 10px; align-items: flex-end; }
@@ -51,6 +53,7 @@ window.render_watermark = function () {
                     <button class="wm-tab" data-tab="heal">✨ 仿印修復</button>
                     <button class="wm-tab" data-tab="mosaic">🔲 加馬賽克</button>
                     <button class="wm-tab" data-tab="unmosaic">🪄 柔化馬賽克</button>
+                    <button class="wm-tab" data-tab="rmgemini">💎 移除Gemini</button>
                 </div>
 
                 <div class="wm-panel active" id="tab-add">
@@ -140,6 +143,21 @@ window.render_watermark = function () {
                     </div>
                 </div>
 
+                <div class="wm-panel" id="tab-rmgemini">
+                    <p class="instruction-box" style="background:#f3e8ff; border-color:#d8b4fe; color:#581c87;">
+                        <strong>🤖 一鍵移除 Gemini 浮水印：</strong><br>
+                        若點擊後沒反應，通常是因為<b>「覆蓋範圍太小，不小心取樣到浮水印本身」</b>。請將下方拉桿調大後再試一次！
+                    </p>
+                    <div>
+                        <label class="wm-label">🎯 覆蓋範圍大小 <span><span id="wmGeminiSizeVal">120</span>px</span></label>
+                        <input type="range" id="wmGeminiSize" class="wm-range" min="50" max="500" value="120">
+                    </div>
+                    <button id="wmAutoRemoveBtn" class="wm-btn purple">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        一鍵強制移除右下角浮水印
+                    </button>
+                </div>
+
                 <div style="margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
                     <div class="wm-row" style="margin-bottom: 10px;">
                         <button id="wmDeleteBtn" class="wm-btn danger wm-col">
@@ -183,7 +201,8 @@ window.render_watermark = function () {
         // 按鈕
         const downloadBtn = document.getElementById('wmDownloadBtn');
         const resetBtn = document.getElementById('wmResetBtn');
-        const deleteBtn = document.getElementById('wmDeleteBtn'); // 新增刪除按鈕
+        const deleteBtn = document.getElementById('wmDeleteBtn');
+        const autoRemoveBtn = document.getElementById('wmAutoRemoveBtn'); // Gemini 一鍵移除按鈕
 
         // 水印控制項
         const textIn = document.getElementById('wmTxt');
@@ -200,13 +219,14 @@ window.render_watermark = function () {
         const brushSizeIn = document.getElementById('wmBrushSize');
         const brushStrengthIn = document.getElementById('wmBrushStrength');
 
-        // 移除馬賽克(柔化)控制項
+        // 移除馬賽克(柔化)與移除Gemini控制項
         const unmosaicSizeIn = document.getElementById('wmUnmosaicSize');
         const unmosaicStrengthIn = document.getElementById('wmUnmosaicStrength');
+        const geminiSizeIn = document.getElementById('wmGeminiSize');
 
         // --- 狀態管理 ---
         let originalImage = null;
-        let currentMode = 'add'; // 'add', 'heal', 'mosaic', 'unmosaic'
+        let currentMode = 'add';
         let isDrawing = false;
 
         // 仿製印章專用變數
@@ -229,7 +249,6 @@ window.render_watermark = function () {
                 ctx.drawImage(originalImage, 0, 0);
                 drawWatermark();
             } else {
-                // heal, mosaic, unmosaic 模式下
                 if (canvas.width !== originalImage.width) {
                     canvas.width = originalImage.width;
                     canvas.height = originalImage.height;
@@ -323,7 +342,6 @@ window.render_watermark = function () {
             };
         }
 
-        // 執行無痕修復
         function applyHeal(x, y) {
             if (!cloneSource) return;
             const size = parseInt(healSizeIn.value);
@@ -338,7 +356,6 @@ window.render_watermark = function () {
             ctx.restore();
         }
 
-        // 執行馬賽克塗抹
         function applyMosaic(x, y) {
             if (!originalImage) return;
             const brushSize = parseInt(brushSizeIn.value);
@@ -376,23 +393,19 @@ window.render_watermark = function () {
             ctx.putImageData(imgData, startX, startY);
         }
 
-        // 執行柔化/模糊馬賽克 (Unmosaic)
         function applyUnmosaic(x, y) {
             if (!originalImage) return;
             const size = parseInt(unmosaicSizeIn.value);
             const strength = parseInt(unmosaicStrengthIn.value);
 
-            // 建立一個暫存畫布來產生模糊效果，避免直接在原畫布疊加產生黑邊
             const tempCanvas = document.createElement('canvas');
             tempCanvas.width = canvas.width;
             tempCanvas.height = canvas.height;
             const tCtx = tempCanvas.getContext('2d');
 
-            // 把當前畫面畫過去並套用模糊濾鏡
             tCtx.filter = `blur(${strength}px)`;
             tCtx.drawImage(canvas, 0, 0);
 
-            // 用圓形遮罩將模糊後的畫面畫回原畫布指定的滑鼠位置
             ctx.save();
             ctx.beginPath();
             ctx.arc(x, y, size / 2, 0, Math.PI * 2);
@@ -416,7 +429,7 @@ window.render_watermark = function () {
                     ctx.stroke();
                     ctx.restore();
                     setTimeout(() => {
-                        render(); // 重繪消除紅點
+                        render();
                     }, 500);
                     return;
                 } else {
@@ -463,7 +476,7 @@ window.render_watermark = function () {
         });
         imgUp.addEventListener('change', (e) => handleImage(e.target.files[0]));
 
-        const inputs = [textIn, colorIn, opIn, sizeIn, spaceIn, angleIn, fontIn, modeIn, brushSizeIn, healSizeIn, unmosaicSizeIn, unmosaicStrengthIn];
+        const inputs = [textIn, colorIn, opIn, sizeIn, spaceIn, angleIn, fontIn, modeIn, brushSizeIn, healSizeIn, unmosaicSizeIn, unmosaicStrengthIn, geminiSizeIn];
         inputs.forEach(input => {
             input.addEventListener('input', () => {
                 if (input.id === 'wmOp') document.getElementById('wmOpVal').textContent = input.value;
@@ -474,6 +487,7 @@ window.render_watermark = function () {
                 if (input.id === 'wmHealSize') document.getElementById('wmHealSizeVal').textContent = input.value;
                 if (input.id === 'wmUnmosaicSize') document.getElementById('wmUnmosaicSizeVal').textContent = input.value;
                 if (input.id === 'wmUnmosaicStrength') document.getElementById('wmUnmosaicStrengthVal').textContent = input.value;
+                if (input.id === 'wmGeminiSize') document.getElementById('wmGeminiSizeVal').textContent = input.value;
 
                 if (input.id === 'wmMode') {
                     spaceIn.disabled = (input.value === 'center');
@@ -484,6 +498,56 @@ window.render_watermark = function () {
             });
         });
 
+        // ==========================================
+        // Gemini 浮水印一鍵移除事件 (更新優化版)
+        // ==========================================
+        autoRemoveBtn.addEventListener('click', () => {
+            if (!originalImage) return alert('請先上傳圖片！');
+
+            const size = parseInt(geminiSizeIn.value); // 覆蓋目標的寬高
+            const w = canvas.width;
+            const h = canvas.height;
+
+            // 為了讓過渡自然且無痕，我們擷取浮水印左側的「 10px 乾淨像素」
+            const sliceWidth = 10;
+            const sourceX = Math.max(0, w - size - sliceWidth);
+            const sourceY = Math.max(0, h - size);
+
+            if (sourceX >= 0) {
+                // 使用暫存畫布 (Offscreen Canvas) 避免來源與目標重疊時產生的瀏覽器渲染 Bug
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = sliceWidth;
+                tempCanvas.height = size;
+                const tCtx = tempCanvas.getContext('2d');
+
+                // 1. 先把目標左邊「乾淨」的區域複製到暫存畫布
+                tCtx.drawImage(
+                    canvas,
+                    sourceX, sourceY, sliceWidth, size,
+                    0, 0, sliceWidth, size
+                );
+
+                ctx.save();
+                // 2. 將暫存畫布的乾淨像素，橫向拉伸並覆蓋到原畫布的右下角浮水印區域
+                ctx.drawImage(
+                    tempCanvas,
+                    0, 0, sliceWidth, size,        // 從暫存畫布取樣
+                    w - size, h - size, size, size // 覆蓋到原畫布右下角正方形區域
+                );
+                ctx.restore();
+
+                // 視覺回饋：讓按鈕變色提示執行成功
+                const originalText = autoRemoveBtn.innerHTML;
+                autoRemoveBtn.innerHTML = '✅ 移除完成！(若沒蓋掉請調大數值再按一次)';
+                autoRemoveBtn.style.backgroundColor = '#10b981'; // 變成綠色
+
+                setTimeout(() => {
+                    autoRemoveBtn.innerHTML = originalText;
+                    autoRemoveBtn.style.backgroundColor = '';
+                }, 2000);
+            }
+        });
+
         // 刪除圖片按鈕事件
         deleteBtn.addEventListener('click', () => {
             if (!originalImage) return alert('目前沒有圖片可以刪除喔！');
@@ -491,7 +555,7 @@ window.render_watermark = function () {
                 originalImage = null;
                 imgUp.value = ''; // 清空 file input
                 canvas.style.display = 'none';
-                emptyState.style.display = 'block'; // 顯示預設的上傳提示畫面
+                emptyState.style.display = 'block';
             }
         });
 
