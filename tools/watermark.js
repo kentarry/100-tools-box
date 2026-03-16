@@ -420,17 +420,7 @@ window.render_watermark = function () {
             if (currentMode === 'heal') {
                 if (e.shiftKey) {
                     cloneSource = { x: pos.x, y: pos.y };
-                    ctx.save();
-                    ctx.beginPath();
-                    ctx.arc(pos.x, pos.y, 4, 0, Math.PI * 2);
-                    ctx.fillStyle = '#ef4444';
-                    ctx.fill();
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.stroke();
-                    ctx.restore();
-                    setTimeout(() => {
-                        render();
-                    }, 500);
+                    // 移除了原本畫提示點與重新 render 的程式碼
                     return;
                 } else {
                     if (!cloneSource) {
