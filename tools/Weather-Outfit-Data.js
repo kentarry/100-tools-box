@@ -1,0 +1,117 @@
+// 穿搭建議資料庫 - 每季 20-30 組穿搭，含人氣排名
+// 格式: { season, gender, style, title, items, desc, popularity(1-10), colors }
+window._outfitTrends = [
+    // ========== 春季 SPRING ==========
+    // -- 男 --
+    { s: 'spring', g: 'male', style: '休閒', t: '🌸 白T牛仔外套', items: '白色T恤 + 直筒牛仔褲 + 牛仔外套 + 白帆布鞋', d: '最經典不出錯的春日搭配，牛仔外套是春天必備單品。', pop: 10, c: ['white', 'denim', 'white'] },
+    { s: 'spring', g: 'male', style: '休閒', t: '🌿 大地色系休閒', items: '卡其T恤 + 工裝褲 + 帆布鞋 + 棒球帽', d: '大地色系持續流行，工裝褲配素T率性好看。', pop: 9, c: ['beige', 'olive', 'brown'] },
+    { s: 'spring', g: 'male', style: '韓系', t: '🇰🇷 韓系寬褲搭', items: 'Oversize長袖T + 寬褲 + 小白鞋 + 側背包', d: '韓系最愛的寬鬆輪廓，看起來慵懶又時髦。', pop: 9, c: ['gray', 'black', 'white'] },
+    { s: 'spring', g: 'male', style: '正式', t: '🤵 商務春裝', items: '淺藍襯衫 + 深藍西裝褲 + 西裝外套 + 皮帶', d: '春季正裝推薦淺藍與深藍搭配，清爽專業。', pop: 8, c: ['sky', 'navy', 'brown'] },
+    { s: 'spring', g: 'male', style: '運動', t: '🏃 運動休閒風', items: '連帽外套 + 運動褲 + 運動鞋 + 運動手錶', d: 'Athleisure持續火熱，運動單品日常穿超自在。', pop: 8, c: ['navy', 'black', 'white'] },
+    { s: 'spring', g: 'male', style: '文青', t: '📚 文青襯衫風', items: '亞麻襯衫 + 卡其褲 + 皮鞋 + 帆布包', d: '亞麻材質透氣舒適，文青風永遠不退流行。', pop: 7, c: ['cream', 'beige', 'brown'] },
+    { s: 'spring', g: 'male', style: '街頭', t: '🛹 街頭潮流', items: '印花帽T + 工裝短褲 + 板鞋 + 棒球帽', d: '街頭風搭配大膽圖案和寬鬆剪裁。', pop: 7, c: ['black', 'olive', 'white'] },
+    { s: 'spring', g: 'male', style: '日系', t: '🇯🇵 日系層次穿搭', items: '條紋T恤 + 薄針織外套 + 九分褲 + 帆布鞋', d: '日系講究層次和剛好的合身度。', pop: 7, c: ['navy', 'cream', 'denim'] },
+    { s: 'spring', g: 'male', style: '度假', t: '🏖️ 春遊輕裝', items: 'POLO衫 + 短褲 + 涼鞋 + 墨鏡', d: '春天出遊輕便舒適最重要。', pop: 6, c: ['sky', 'beige', 'brown'] },
+    { s: 'spring', g: 'male', style: '約會', t: '💘 春日約會裝', items: '白襯衫 + 修身牛仔褲 + 皮鞋 + 手錶', d: '乾淨簡約的白襯衫永遠是約會好選擇。', pop: 8, c: ['white', 'denim', 'brown'] },
+    { s: 'spring', g: 'male', style: '學院', t: '🎓 學院風', items: 'V領毛衣背心 + 白襯衫 + 西裝褲 + 皮鞋', d: '學院風回歸，preppy look 是 2025 春季重點。', pop: 7, c: ['navy', 'white', 'gray'] },
+    { s: 'spring', g: 'male', style: '機能', t: '⚙️ 機能風格', items: '防風外套 + 機能褲 + 運動鞋 + 後背包', d: '機能穿搭重視實用性，多口袋設計最實穿。', pop: 6, c: ['black', 'olive', 'gray'] },
+    // -- 女 --
+    { s: 'spring', g: 'female', style: '甜美', t: '🌷 春日花漾', items: '雪紡上衣 + 碎花長裙 + 編織包 + 草帽', d: '輕透材質是春天的關鍵字。雪紡搭花裙，氣質滿分。', pop: 10, c: ['cream', 'pink', 'sage'] },
+    { s: 'spring', g: 'female', style: '知性', t: '📚 知性通勤', items: '針織外套 + 白襯衫 + 西裝褲 + 托特包', d: '知性風持續流行，針織外套內搭白襯衫，配直筒褲。', pop: 9, c: ['beige', 'white', 'camel'] },
+    { s: 'spring', g: 'female', style: '韓系', t: '🇰🇷 韓系小清新', items: '短版針織上衣 + 高腰寬褲 + 小白鞋 + 手鏈', d: '韓系流行短版上衣配高腰褲，比例超好。', pop: 9, c: ['lavender', 'cream', 'white'] },
+    { s: 'spring', g: 'female', style: '法式', t: '🗼 法式優雅', items: '條紋上衣 + 高腰牛仔褲 + 芭蕾舞鞋 + 貝雷帽', d: '法式穿搭永遠經典，條紋是不敗單品。', pop: 9, c: ['navy', 'white', 'wine'] },
+    { s: 'spring', g: 'female', style: '休閒', t: '☕ 咖啡廳穿搭', items: '衛衣 + 百褶裙 + 帆布鞋 + 帆布包', d: '衛衣配裙子的混搭，休閒又不失女性味。', pop: 8, c: ['gray', 'cream', 'white'] },
+    { s: 'spring', g: 'female', style: '運動', t: '🏃 運動時尚', items: '運動背心 + 瑜珈褲 + 運動外套 + 運動鞋', d: '運動穿搭也可以很時尚，選對顏色是關鍵。', pop: 7, c: ['black', 'sage', 'white'] },
+    { s: 'spring', g: 'female', style: '浪漫', t: '💐 浪漫碎花', items: '碎花洋裝 + 針織外套 + 瑪莉珍鞋 + 耳環', d: '碎花洋裝是春天的代名詞。', pop: 8, c: ['pink', 'cream', 'brown'] },
+    { s: 'spring', g: 'female', style: '帥氣', t: '🖤 帥氣皮衣', items: '皮外套 + 白T恤 + 窄管褲 + 短靴', d: '皮衣在春天不會太熱，是增加帥氣度的好選擇。', pop: 7, c: ['black', 'white', 'black'] },
+    { s: 'spring', g: 'female', style: '約會', t: '💘 約會甜美裝', items: '方領上衣 + A字裙 + 高跟鞋 + 項鍊', d: '方領上衣修飾臉型又性感，A字裙修身超顯瘦。', pop: 8, c: ['cream', 'wine', 'camel'] },
+    { s: 'spring', g: 'female', style: '度假', t: '🌺 春遊輕裝', items: '棉麻洋裝 + 草編包 + 涼鞋 + 墨鏡', d: '棉麻材質輕盈透氣，一件式洋裝最方便。', pop: 7, c: ['cream', 'sage', 'brown'] },
+    { s: 'spring', g: 'female', style: '日系', t: '🇯🇵 日系森女風', items: '寬鬆棉T + 吊帶裙 + 帆布鞋 + 棉麻包', d: '森女風追求自然舒適，疊穿是關鍵技巧。', pop: 7, c: ['cream', 'olive', 'beige'] },
+    { s: 'spring', g: 'female', style: '極簡', t: '⬜ 極簡主義', items: '黑色高領 + 白色寬褲 + 皮鞋 + 手錶', d: '黑白配色是極簡主義的精髓，質感勝過一切。', pop: 6, c: ['black', 'white', 'brown'] },
+
+    // ========== 夏季 SUMMER ==========
+    // -- 男 --
+    { s: 'summer', g: 'male', style: '休閒', t: '☀️ 夏日街頭', items: '寬鬆背心 + 運動短褲 + 涼拖 + 墨鏡', d: '夏天就是要輕鬆，透氣材質最重要。', pop: 10, c: ['white', 'black', 'brown'] },
+    { s: 'summer', g: 'male', style: '度假', t: '🏖️ 海邊度假', items: '花襯衫 + 卡其短褲 + 涼鞋 + 墨鏡 + 草帽', d: '古巴領花襯衫是夏季度假首選。', pop: 9, c: ['coral', 'beige', 'brown'] },
+    { s: 'summer', g: 'male', style: '現代', t: '🌊 清涼簡約', items: '素面T恤 + 棉麻短褲 + 帆布鞋 + 手錶', d: '夏天簡單就好，素面T恤配棉麻褲透氣舒適。', pop: 9, c: ['white', 'beige', 'white'] },
+    { s: 'summer', g: 'male', style: '韓系', t: '🇰🇷 韓系寬鬆T', items: 'Oversize T恤 + 棉短褲 + 拖鞋 + 棒球帽', d: '韓系夏日以寬鬆為主，舒適就是時尚。', pop: 8, c: ['gray', 'black', 'black'] },
+    { s: 'summer', g: 'male', style: '運動', t: '🏀 運動風格', items: '籃球背心 + 運動短褲 + 球鞋 + 運動手環', d: '運動風夏天最應景，吸汗材質是首選。', pop: 8, c: ['navy', 'black', 'white'] },
+    { s: 'summer', g: 'male', style: '正式', t: '👔 夏季商務', items: '短袖襯衫 + 西裝短褲 + 皮鞋 + 皮帶', d: '夏季商務可選短袖襯衫，保持專業又不悶熱。', pop: 7, c: ['sky', 'navy', 'brown'] },
+    { s: 'summer', g: 'male', style: '潮流', t: '🎨 撞色潮流', items: '撞色T恤 + 寬褲 + 厚底鞋 + 漁夫帽', d: '大膽撞色是夏季潮流重點。', pop: 7, c: ['coral', 'sage', 'black'] },
+    { s: 'summer', g: 'male', style: '文青', t: '📖 夏日文青', items: '亞麻襯衫 + 九分褲 + 編織鞋 + 帆布包', d: '亞麻單品是夏天的質感首選。', pop: 6, c: ['cream', 'olive', 'brown'] },
+    { s: 'summer', g: 'male', style: '機能', t: '⚙️ 夏日機能', items: '速乾T恤 + 機能短褲 + 登山鞋 + 後背包', d: '機能面料排汗透氣，戶外活動首選。', pop: 6, c: ['olive', 'black', 'gray'] },
+    { s: 'summer', g: 'male', style: '約會', t: '💘 夏日約會', items: 'POLO衫 + 修身短褲 + 皮鞋 + 手錶', d: 'POLO衫兼具休閒和正式感，約會百搭。', pop: 8, c: ['navy', 'beige', 'brown'] },
+    { s: 'summer', g: 'male', style: '海灘', t: '🏄 衝浪風', items: '衝浪T恤 + 海灘褲 + 夾腳拖 + 太陽眼鏡', d: '海灘風就是要輕鬆自在，色彩鮮豔更有夏天感。', pop: 7, c: ['sky', 'coral', 'white'] },
+    { s: 'summer', g: 'male', style: '日系', t: '🇯🇵 日系夏裝', items: '寬鬆短T + 棉短褲 + 涼鞋 + 托特包', d: '日系夏裝講究舒適和自然輪廓。', pop: 6, c: ['cream', 'navy', 'beige'] },
+    // -- 女 --
+    { s: 'summer', g: 'female', style: '休閒', t: '🌊 海洋風', items: '短版上衣 + 高腰短褲 + 漁夫帽 + 墨鏡', d: '高腰短褲拉長比例，配短版上衣展現率性。', pop: 10, c: ['white', 'denim', 'sky'] },
+    { s: 'summer', g: 'female', style: '度假', t: '🌺 度假洋裝', items: '碎花洋裝 + 草帽 + 編織包 + 涼鞋', d: '一件式洋裝最省事也最出片。', pop: 10, c: ['lavender', 'cream', 'coral'] },
+    { s: 'summer', g: 'female', style: '甜美', t: '🍦 甜美少女', items: '方領上衣 + 百褶裙 + 涼鞋 + 耳環', d: '方領是今夏最火領型，顯瘦又性感。', pop: 9, c: ['pink', 'cream', 'camel'] },
+    { s: 'summer', g: 'female', style: '韓系', t: '🇰🇷 韓系清涼', items: '背心 + 高腰寬褲 + 厚底涼鞋 + 手鏈', d: '韓系夏日以清涼為主，寬褲遮肉又時髦。', pop: 9, c: ['white', 'beige', 'white'] },
+    { s: 'summer', g: 'female', style: '辣妹', t: '🔥 辣妹風格', items: '短版背心 + 迷你裙 + 厚底鞋 + 墨鏡', d: '辣妹風回歸，大膽展現自信。', pop: 8, c: ['black', 'black', 'black'] },
+    { s: 'summer', g: 'female', style: '運動', t: '🏃 運動甜心', items: '運動 bra + 瑜珈褲 + 運動鞋 + 棒球帽', d: '運動風也可以很可愛，粉色系最受歡迎。', pop: 7, c: ['pink', 'black', 'white'] },
+    { s: 'summer', g: 'female', style: '文青', t: '📚 夏日文青', items: '棉麻上衣 + 寬鬆長褲 + 草編包 + 手環', d: '棉麻材質清爽舒適，文青女孩最愛。', pop: 7, c: ['cream', 'sage', 'brown'] },
+    { s: 'summer', g: 'female', style: '法式', t: '🗼 法式浪漫', items: '包袖上衣 + 高腰長裙 + 草帽 + 編織包', d: '法式浪漫穿搭講究優雅和不經意的美感。', pop: 8, c: ['white', 'lavender', 'cream'] },
+    { s: 'summer', g: 'female', style: '約會', t: '💘 甜美約會', items: '露肩上衣 + A字裙 + 高跟涼鞋 + 項鍊', d: '露肩設計增添女人味，A字裙修飾身形。', pop: 8, c: ['coral', 'cream', 'camel'] },
+    { s: 'summer', g: 'female', style: '海灘', t: '🏖️ 海灘風', items: '比基尼罩衫 + 海灘裙 + 夾腳拖 + 墨鏡', d: '罩衫是海灘必備，既遮陽又時尚。', pop: 7, c: ['white', 'sky', 'coral'] },
+    { s: 'summer', g: 'female', style: '極簡', t: '⬜ 極簡夏日', items: '白色背心 + 黑色長褲 + 涼鞋 + 手錶', d: '黑白極簡風在夏天看起來特別清爽。', pop: 6, c: ['white', 'black', 'brown'] },
+
+    // ========== 秋季 AUTUMN ==========
+    // -- 男 --
+    { s: 'autumn', g: 'male', style: '休閒', t: '🍂 秋日層次', items: '帽T + 牛仔外套 + 直筒褲 + 後背包', d: '秋天講究層次穿搭，帽T外罩牛仔外套最不出錯。', pop: 10, c: ['gray', 'denim', 'black'] },
+    { s: 'autumn', g: 'male', style: '街頭', t: '🛹 街頭工裝', items: '衛衣 + 工裝褲 + 帆布鞋 + 棒球帽', d: '工裝褲2025依然火熱，搭配oversize衛衣很有型。', pop: 9, c: ['olive', 'black', 'gray'] },
+    { s: 'autumn', g: 'male', style: '韓系', t: '🇰🇷 韓系大衣', items: '高領內搭 + 大衣 + 寬褲 + 皮鞋', d: '韓系秋冬主打大衣搭配高領，簡約有型。', pop: 9, c: ['black', 'camel', 'black'] },
+    { s: 'autumn', g: 'male', style: '正式', t: '🤵 秋季商務', items: '西裝外套 + 高領毛衣 + 西裝褲 + 皮鞋', d: '秋天正裝內搭高領毛衣比襯衫更有層次。', pop: 8, c: ['navy', 'gray', 'brown'] },
+    { s: 'autumn', g: 'male', style: '文青', t: '📖 秋日文青', items: '針織外套 + 格紋襯衫 + 卡其褲 + 皮鞋', d: '針織外套搭格紋衫是溫暖的文青標準穿搭。', pop: 8, c: ['brown', 'cream', 'beige'] },
+    { s: 'autumn', g: 'male', style: '日系', t: '🇯🇵 日系層次', items: '長袖T + 開襟毛衣 + 九分褲 + 帆布鞋', d: '日系擅長的多層穿搭，秋天最好發揮。', pop: 7, c: ['navy', 'cream', 'denim'] },
+    { s: 'autumn', g: 'male', style: '運動', t: '🏃 秋日運動', items: '運動外套 + 運動褲 + 運動鞋 + 後背包', d: '運動套裝是最方便的秋日穿搭。', pop: 7, c: ['black', 'gray', 'white'] },
+    { s: 'autumn', g: 'male', style: '復古', t: '🎸 復古搖滾', items: '皮夾克 + 窄管牛仔褲 + 皮靴 + 墨鏡', d: '皮衣是秋天的必備單品，自帶帥氣光環。', pop: 7, c: ['black', 'denim', 'black'] },
+    { s: 'autumn', g: 'male', style: '戶外', t: '🏕️ 戶外穿搭', items: '刷毛外套 + 登山褲 + 登山鞋 + 毛帽', d: '秋天戶外活動穿搭以保暖機能為主。', pop: 6, c: ['olive', 'brown', 'gray'] },
+    { s: 'autumn', g: 'male', style: '約會', t: '💘 秋日約會', items: '毛衣 + 修身牛仔褲 + 皮鞋 + 手錶', d: '柔軟毛衣增添親和力，約會好感度UP。', pop: 8, c: ['wine', 'denim', 'brown'] },
+    { s: 'autumn', g: 'male', style: '學院', t: '🎓 秋季學院風', items: 'V領毛衣 + 白襯衫 + 西裝褲 + 皮鞋', d: 'Preppy look在秋季最合適。', pop: 7, c: ['navy', 'white', 'gray'] },
+    { s: 'autumn', g: 'male', style: '英倫', t: '🇬🇧 英倫紳士', items: '風衣 + 襯衫 + 西裝褲 + 雀爾喜靴', d: '風衣是英倫風的靈魂單品。', pop: 7, c: ['camel', 'white', 'navy'] },
+    // -- 女 --
+    { s: 'autumn', g: 'female', style: '知性', t: '🍁 秋日質感', items: '高領毛衣 + 長裙 + 風衣 + 手錶', d: '大地色系毛衣搭配流動感長裙，超有秋天氣氛。', pop: 10, c: ['camel', 'cream', 'olive'] },
+    { s: 'autumn', g: 'female', style: '法式', t: '🗼 法式經典', items: '條紋上衣 + 西裝褲 + 針織外套 + 貝雷帽', d: '法式優雅永不退流行。', pop: 9, c: ['navy', 'white', 'wine'] },
+    { s: 'autumn', g: 'female', style: '韓系', t: '🇰🇷 韓系長大衣', items: '長版大衣 + 高領毛衣 + 寬褲 + 短靴', d: '韓系秋冬最愛的長大衣造型，氣場全開。', pop: 9, c: ['camel', 'cream', 'black'] },
+    { s: 'autumn', g: 'female', style: '甜美', t: '🧸 毛衣裙子', items: '寬鬆毛衣 + 百褶裙 + 長靴 + 耳環', d: '毛衣配裙子是秋天最甜美的穿搭。', pop: 9, c: ['cream', 'brown', 'camel'] },
+    { s: 'autumn', g: 'female', style: '帥氣', t: '🖤 皮衣搭配', items: '皮外套 + 黑T恤 + 直筒褲 + 短靴', d: '皮衣搭配全黑色系，帥氣又有態度。', pop: 8, c: ['black', 'black', 'black'] },
+    { s: 'autumn', g: 'female', style: '休閒', t: '☕ 慵懶風', items: 'Oversized衛衣 + 內搭褲 + 帆布鞋 + 托特包', d: '秋天窩在咖啡廳的完美穿搭。', pop: 8, c: ['gray', 'black', 'cream'] },
+    { s: 'autumn', g: 'female', style: '約會', t: '💘 秋日約會', items: '針織連身裙 + 風衣 + 高跟短靴 + 項鍊', d: '針織連身裙修身又優雅，約會滿分。', pop: 8, c: ['wine', 'camel', 'camel'] },
+    { s: 'autumn', g: 'female', style: '日系', t: '🇯🇵 日系森女', items: '棉麻洋裝 + 針織外套 + 短靴 + 帆布包', d: '森女風在秋天最應景，自然系色彩超療癒。', pop: 7, c: ['cream', 'olive', 'brown'] },
+    { s: 'autumn', g: 'female', style: '復古', t: '🎬 復古風', items: '格紋西裝外套 + 高領內搭 + 西裝褲 + 皮鞋', d: '格紋西裝外套是復古風的靈魂單品。', pop: 7, c: ['brown', 'black', 'brown'] },
+    { s: 'autumn', g: 'female', style: '運動', t: '🏃 秋日運動', items: '運動外套 + 束口褲 + 運動鞋 + 後背包', d: '運動套裝出街也可以很時髦。', pop: 6, c: ['black', 'gray', 'white'] },
+    { s: 'autumn', g: 'female', style: '極簡', t: '⬜ 極簡秋日', items: '黑色毛衣 + 白色長褲 + 尖頭鞋 + 手錶', d: '極簡穿搭只需要兩個顏色就足夠高級。', pop: 7, c: ['black', 'white', 'camel'] },
+    { s: 'autumn', g: 'female', style: '英倫', t: '🇬🇧 英倫千鳥格', items: '千鳥格外套 + 高領毛衣 + 寬褲 + 切爾西靴', d: '千鳥格是秋天的經典元素。', pop: 7, c: ['black', 'cream', 'black'] },
+
+    // ========== 冬季 WINTER ==========
+    // -- 男 --
+    { s: 'winter', g: 'male', style: '保暖', t: '❄️ 冬日保暖', items: '毛衣 + 羽絨外套 + 牛仔褲 + 圍巾 + 毛帽', d: '冬天保暖第一，深色羽絨配亮色圍巾做點綴。', pop: 10, c: ['navy', 'black', 'wine'] },
+    { s: 'winter', g: 'male', style: '韓系', t: '🇰🇷 韓系長版', items: '長版大衣 + 高領毛衣 + 寬褲 + 皮靴', d: '韓系冬季必備長版大衣，氣場無敵。', pop: 9, c: ['camel', 'black', 'black'] },
+    { s: 'winter', g: 'male', style: '正式', t: '🎩 冬季紳士', items: '高領毛衣 + 大衣 + 西裝褲 + 皮帶 + 手錶', d: '冬季正裝：駝色大衣內搭高領是歐洲紳士標配。', pop: 9, c: ['camel', 'black', 'navy'] },
+    { s: 'winter', g: 'male', style: '休閒', t: '🧣 毛衣牛仔', items: '厚毛衣 + 牛仔褲 + 運動鞋 + 圍巾', d: '最日常的冬日穿搭，暖和又好看。', pop: 9, c: ['gray', 'denim', 'wine'] },
+    { s: 'winter', g: 'male', style: '街頭', t: '🔥 街頭嘻哈', items: '連帽羽絨 + 寬褲 + 高筒鞋 + 毛帽', d: '街頭風冬天也不減帥氣。', pop: 8, c: ['black', 'black', 'white'] },
+    { s: 'winter', g: 'male', style: '運動', t: '🏃 冬日運動', items: '刷毛外套 + 運動褲 + 運動鞋 + 手套', d: '刷毛材質保暖又透氣，冬季運動首選。', pop: 7, c: ['navy', 'gray', 'white'] },
+    { s: 'winter', g: 'male', style: '復古', t: '🎸 復古皮衣', items: '飛行員皮衣 + 毛衣 + 直筒褲 + 皮靴', d: '飛行員皮衣是冬季的帥氣擔當。', pop: 7, c: ['brown', 'cream', 'black'] },
+    { s: 'winter', g: 'male', style: '日系', t: '🇯🇵 日系厚層', items: '漁夫外套 + 格紋襯衫 + 寬褲 + 皮靴', d: '日系冬裝層次豐富，色彩以咖啡和灰為主。', pop: 6, c: ['brown', 'cream', 'olive'] },
+    { s: 'winter', g: 'male', style: '約會', t: '💘 冬日約會', items: '駝色大衣 + 白毛衣 + 西裝褲 + 皮鞋 + 圍巾', d: '駝色大衣搭白毛衣是冬日暖男標配。', pop: 8, c: ['camel', 'white', 'navy'] },
+    { s: 'winter', g: 'male', style: '戶外', t: '🏔️ 雪地裝備', items: '防水羽絨 + 防風褲 + 雪靴 + 毛帽 + 手套', d: '極寒天氣的完整保暖裝備。', pop: 6, c: ['navy', 'black', 'gray'] },
+    { s: 'winter', g: 'male', style: '學院', t: '🎓 冬季學院', items: '毛衣背心 + 白襯衫 + 大衣 + 西裝褲', d: '冬季學院風多了大衣更有氣場。', pop: 7, c: ['navy', 'white', 'camel'] },
+    { s: 'winter', g: 'male', style: '英倫', t: '🇬🇧 英倫紳士冬裝', items: '格紋大衣 + 高領 + 西褲 + 雀爾喜靴 + 圍巾', d: '格紋大衣是英國冬天的經典。', pop: 7, c: ['brown', 'black', 'wine'] },
+    // -- 女 --
+    { s: 'winter', g: 'female', style: '優雅', t: '🎄 冬日優雅', items: '高領毛衣 + 大衣 + 內搭褲 + 圍巾 + 耳環', d: '大衣選過膝款最有氣場。', pop: 10, c: ['camel', 'black', 'beige'] },
+    { s: 'winter', g: 'female', style: '可愛', t: '🧸 冬日可愛', items: '泰迪熊外套 + 毛衣 + 寬褲 + 毛帽 + 圍巾', d: '毛茸茸的泰迪熊外套是冬天人氣單品。', pop: 9, c: ['cream', 'pink', 'beige'] },
+    { s: 'winter', g: 'female', style: '韓系', t: '🇰🇷 韓系羽絨', items: '短版羽絨 + 高領毛衣 + 長裙 + 短靴', d: '短版羽絨配長裙是韓國冬天最流行的穿法。', pop: 9, c: ['black', 'cream', 'brown'] },
+    { s: 'winter', g: 'female', style: '甜美', t: '🎀 甜美冬裝', items: '毛呢外套 + 連身裙 + 過膝靴 + 貝雷帽', d: '毛呢外套是冬天最優雅的外套選擇。', pop: 9, c: ['pink', 'cream', 'wine'] },
+    { s: 'winter', g: 'female', style: '帥氣', t: '🖤 全黑酷帥', items: '長版皮衣 + 高領毛衣 + 側釘褲 + 馬丁靴', d: '全黑穿搭自帶氣場，冬天最有態度。', pop: 8, c: ['black', 'black', 'black'] },
+    { s: 'winter', g: 'female', style: '休閒', t: '☕ 居家暖搭', items: '長版針織外套 + 衛衣 + 棉褲 + 毛拖鞋', d: '居家風穿出門也可以很時髦，舒適感第一。', pop: 7, c: ['cream', 'gray', 'beige'] },
+    { s: 'winter', g: 'female', style: '知性', t: '📚 冬日知性', items: '風衣式大衣 + 高領 + 西裝褲 + 尖頭靴 + 手錶', d: '風衣式大衣兼具知性和優雅。', pop: 8, c: ['camel', 'black', 'navy'] },
+    { s: 'winter', g: 'female', style: '約會', t: '💘 冬日約會', items: '毛呢短外套 + 針織連身裙 + 高跟靴 + 項鍊', d: '毛呢外套搭針織裙，優雅溫柔。', pop: 8, c: ['wine', 'cream', 'camel'] },
+    { s: 'winter', g: 'female', style: '法式', t: '🗼 法式冬裝', items: '駝色大衣 + 條紋上衣 + 直筒褲 + 尖頭鞋 + 圍巾', d: '法國女人的冬天就是一件大衣搞定一切。', pop: 8, c: ['camel', 'navy', 'white'] },
+    { s: 'winter', g: 'female', style: '運動', t: '🏃 冬日運動', items: '防風外套 + 刷毛上衣 + 運動褲 + 運動鞋 + 毛帽', d: '冬天運動選刷毛材質，暖和透氣。', pop: 6, c: ['black', 'gray', 'white'] },
+    { s: 'winter', g: 'female', style: '日系', t: '🇯🇵 日系暖冬', items: '麻花毛衣 + 毛呢寬褲 + 短靴 + 圍巾', d: '日系冬裝以暖色和柔軟材質為主調。', pop: 7, c: ['cream', 'brown', 'camel'] },
+    { s: 'winter', g: 'female', style: '極簡', t: '⬜ 極簡冬日', items: '黑大衣 + 白高領 + 黑褲 + 黑靴', d: '極簡不敗搭配：黑外套白內搭。', pop: 7, c: ['black', 'white', 'black'] },
+];
+
+// 按人氣排序
+window._outfitTrends.sort((a, b) => b.pop - a.pop);
