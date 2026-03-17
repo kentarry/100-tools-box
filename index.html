@@ -522,7 +522,8 @@
             fetchToolRanking();
 
             // 工具點擊追蹤 (fire-and-forget)
-            function trackToolClick(toolId) {
+            // ★ 掛在 window 上，讓 app.js 也能呼叫
+            window.trackToolClick = function(toolId) {
                 getIP().then(ip => {
                     fetch(GAS_URL, {
                         method: 'POST',
@@ -530,7 +531,7 @@
                         body: JSON.stringify({ action: 'toolClick', toolId: toolId, ip: ip })
                     }).catch(err => console.error('工具追蹤失敗', err));
                 });
-            }
+            };
 
             // ==========================================
             // 3. 分類與篩選
