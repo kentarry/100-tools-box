@@ -89,10 +89,24 @@ function render_dashboard() {
  * 🔄 功能 B：工具載入與渲染路由
  */
 function loadTool(toolName, title, buttonElement) {
-    // 追蹤工具點擊到 Google Sheets
-    if (typeof trackToolClick === 'function') {
-        trackToolClick(toolName);
-    }
+    // ★ 工具點擊追蹤 — 自帶 GAS，不依賴 index.html
+    try {
+        const GAS = "https://script.google.com/macros/s/AKfycbwErP5VVl_6vI29OiH4BAfmvCwC2eYmO5QrvK-BKYmYz1M6dCGyIffxmQgFwKzZlKs/exec";
+        fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => {
+            fetch(GAS, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: 'toolClick', toolId: toolName, ip: d.ip })
+            });
+        }).catch(() => {
+            // IP 取不到也照送，用 '未知' 代替
+            fetch(GAS, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: 'toolClick', toolId: toolName, ip: '未知' })
+            });
+        });
+    } catch(e) { /* 追蹤失敗不影響工具正常使用 */ }
 
     // 1. 清空舊內容
     container.innerHTML = '';
