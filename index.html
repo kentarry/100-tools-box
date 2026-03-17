@@ -66,27 +66,11 @@
             <div class="sticky top-0 bg-slate-900 pt-4 pb-2 z-10">
                 <div
                     class="text-sm font-bold text-emerald-400 flex items-center gap-2 mb-1 px-2 uppercase tracking-wider">
-                    <span>🔥</span> 多人使用 / 熱門
+                    <span>🔥</span> 熱門工具 TOP 10
                 </div>
             </div>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="removeBg">高級去背上色機</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="jsonTool">JSON 格式化</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="passwordGen">強密碼產生</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="ipChecker">我的 IP 查詢</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="watermark">機密防盜浮水印</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="wifiQRGen">WiFi 連線 QR</button>
+            <!-- 動態填入的熱門工具列表 -->
+            <div id="hot-tools-list"></div>
 
             <div class="my-6 border-t border-slate-700 mx-2"></div>
 
@@ -94,259 +78,105 @@
                 <span>📁</span> 全部分類目錄
             </div>
 
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-4 px-2">開發與網頁輔助</div>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="base64Tool">Base64 編碼</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="htmlEntities">HTML 實體轉碼</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="mdPreview">MD 預覽器</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="cleanUrl">網址清洗</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="linkExtractor">連結抓取器</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="unicodeTool">Unicode 轉換器</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="ruler">網頁元件對齊線</button>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-4 px-2">🔧 開發與網頁</div>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="jsonTool">JSON 格式化</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="base64Tool">Base64 編碼</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="htmlEntities">HTML 實體轉碼</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="mdPreview">MD 預覽器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="cleanUrl">網址清洗</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="linkExtractor">連結抓取器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="unicodeTool">Unicode 轉換器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="ruler">網頁元件對齊線</button>
 
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">隱私與資訊安全</div>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="pwdChecker">密碼外洩檢查器</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="passwordEntropy">密碼強度試算</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="emailObfuscator">Email 防搜刮混淆</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="burnMessage">純前端加密訊息</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="dataMask">資料去識別化</button>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">🔒 隱私與安全</div>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="passwordGen">強密碼產生</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="pwdChecker">密碼外洩檢查器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="passwordEntropy">密碼強度試算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="emailObfuscator">Email 防搜刮混淆</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="burnMessage">純前端加密訊息</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="dataMask">資料去識別化</button>
 
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">影像與色彩處理</div>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="heicConverter">HEIC 轉 JPG</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="videoToGif">影片轉 GIF</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="colorPicker">圖片色碼擷取</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="qrGenerator">萬能 QR Code 生成器</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="colorLighten">顏色亮度調整</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="grayscaleTool">黑白濾鏡預覽</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="urlShortener">短網址生成</button>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">🎨 影像與色彩</div>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="removeBg">高級去背上色機</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="heicConverter">HEIC 轉 JPG</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="videoToGif">影片轉 GIF</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="colorPicker">圖片色碼擷取</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="qrGenerator">萬能 QR Code 生成器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="wifiQRGen">WiFi 連線 QR</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="colorLighten">顏色亮度調整</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="grayscaleTool">黑白濾鏡預覽</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="urlShortener">短網址生成</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="watermark">機密防盜浮水印</button>
 
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">文書與文字排版</div>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="panguSpacing">盤古之白排版器</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="signaturePad">手寫簽名產生器</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="textDecoder">亂碼編碼還原器</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="capitalNumber">大寫金額轉換器</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="caseConverter">大小寫轉換</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="whitespaceFix">多餘空白清理</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="redundancyFilter">廢話過濾檢查器</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="lineCounter">字數行數統計</button>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">📝 文書與排版</div>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="panguSpacing">盤古之白排版器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="signaturePad">手寫簽名產生器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="textDecoder">亂碼編碼還原器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="capitalNumber">大寫金額轉換器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="caseConverter">大小寫轉換</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="whitespaceFix">多餘空白清理</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="redundancyFilter">廢話過濾檢查器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="lineCounter">字數行數統計</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="fileConverter">萬能檔案轉換</button>
 
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">金錢理財與消費</div>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="expenseSplitter">多人分帳計算</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="loanCalculator">提前還款試算</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="compoundInterest">複利增長圖表</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="creditInterest">分期真利率</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="currencyConverter">即時匯率換算</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="invoiceChecker">發票快對</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="vatChecker">公司統編查驗</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="fileConverter">萬能檔案轉換</button>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">💰 金錢與理財</div>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="expenseSplitter">多人分帳計算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="loanCalculator">提前還款試算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="compoundInterest">複利增長圖表</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="creditInterest">分期真利率</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="currencyConverter">即時匯率換算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="invoiceChecker">發票快對</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="vatChecker">公司統編查驗</button>
 
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">健康與生活管理</div>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="healthCalc">TDEE 熱量計算</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="recipeScaler">食譜份量換算</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="alcoholCalculator">酒精代謝試算</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="foodRecommender">食材推薦</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="eyeTester">簡易視力檢查</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="blueLightFilter">護眼模式預覽</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="contrastChecker">對比度檢查器</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="weatherOutfit">天氣穿搭建議</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="laundrySymbols">衣服洗標字典</button>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">🏥 健康與生活</div>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="healthCalc">TDEE 熱量計算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="recipeScaler">食譜份量換算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="alcoholCalculator">酒精代謝試算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="foodRecommender">食材推薦</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="weatherOutfit">天氣穿搭建議</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="laundrySymbols">衣服洗標字典</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="passportChecker">護照效期檢查</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="petAgeCalc">寵物年齡換算</button>
 
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">電腦硬體與檢測</div>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="displayTester">螢幕壞點檢測</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="screenInfo">螢幕資訊檢測</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="mouseTester">滑鼠連點測試</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="keyboardTester">鍵盤按鍵測試</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="fontViewer">本機字型預覽</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="fontCompare">字體對比工具</button>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">📐 硬體檢測與度量</div>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="displayTester">螢幕壞點檢測</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="screenInfo">螢幕資訊檢測</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="mouseTester">滑鼠連點測試</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="keyboardTester">鍵盤按鍵測試</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="fontViewer">本機字型預覽</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="fontCompare">字體對比工具</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="unitConverter">通用單位換算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="areaConverter">坪數面積換算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="distanceMeter">地圖直線距離</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="screwSize">螺絲規格換算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="mathReference">數學公式參考</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="tempConverter">溫度單位轉換</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="eyeTester">簡易視力檢查</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="blueLightFilter">護眼模式預覽</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="contrastChecker">對比度檢查器</button>
 
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">實用度量與計算</div>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="unitConverter">通用單位換算</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="areaConverter">坪數面積換算</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="distanceMeter">地圖直線距離</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="screwSize">螺絲規格換算</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="mathReference">數學公式參考</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="tempConverter">溫度單位轉換</button>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">⚡ 效率與日常</div>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="timezoneCoordinator">跨時區協調</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="fsClock">全螢幕時鐘</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="webWhiteboard">純網頁白板</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="metronome">音樂節拍器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="taxiFare">計程車資預估</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="fuelSplitter">自駕油資分攤</button>
 
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">輔助與效率工具</div>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="timezoneCoordinator">跨時區協調</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="fsClock">全螢幕時鐘</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="webWhiteboard">純網頁白板</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="metronome">音樂節拍器</button>
-
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">交通與外宿日常</div>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="taxiFare">計程車資預估</button>
-            <button
-                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                data-tool="fuelSplitter">自駕油資分攤</button>
-            <button <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">娛樂與社交冷知識</div>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="foodRoulette">命運食神輪盤</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="truthDare">真心話大冒險</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="commentPicker">抽獎留言清洗</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="mbtiGuide">MBTI 相處攻略</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="relativeTitle">親戚稱呼計算</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="fortuneSimulator">今日運勢求籤</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="calendarConverter">農曆國曆轉換</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="greetingGen">長輩圖產生器</button>
-
-                <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">📦 其他與未分類工具</div>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="randomNumber">隨機數產生器</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="arrayShuffler">清單隨機打亂</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="nameStrokes">姓名筆畫試算</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="morseCode">摩斯密碼翻譯</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="typingTest">英打速度測試</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="petAgeCalc">寵物年齡換算</button>
-                <button
-                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
-                    data-tool="passportChecker">護照效期檢查</button>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">🎮 娛樂與其他</div>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="foodRoulette">命運食神輪盤</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="truthDare">真心話大冒險</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="commentPicker">抽獎留言清洗</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="mbtiGuide">MBTI 相處攻略</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="relativeTitle">親戚稱呼計算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="fortuneSimulator">今日運勢求籤</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="calendarConverter">農曆國曆轉換</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="greetingGen">長輩圖產生器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="randomNumber">隨機數產生器</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="arrayShuffler">清單隨機打亂</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="nameStrokes">姓名筆畫試算</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="morseCode">摩斯密碼翻譯</button>
+            <button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700" data-tool="typingTest">英打速度測試</button>
 
         </nav>
     </aside>
@@ -634,6 +464,77 @@
             closeSidebarBtn.addEventListener('click', toggleSidebar);
             sidebarOverlay.addEventListener('click', toggleSidebar);
 
+            // ==========================================
+            // 2.5 建立工具名稱對照表 & 動態熱門工具
+            // ==========================================
+            const toolNameMap = {};
+            document.querySelectorAll('#menu-nav button[data-tool]').forEach(btn => {
+                toolNameMap[btn.getAttribute('data-tool')] = btn.innerText.trim();
+            });
+
+            // 預設熱門工具 (當 GAS 無數據時使用)
+            const defaultHotTools = [
+                'removeBg', 'jsonTool', 'passwordGen', 'ipChecker', 'watermark',
+                'wifiQRGen', 'expenseSplitter', 'currencyConverter', 'healthCalc', 'foodRoulette'
+            ];
+
+            // 渲染熱門工具到側邊欄
+            function renderHotTools(toolIds) {
+                const hotList = document.getElementById('hot-tools-list');
+                if (!hotList) return;
+                hotList.innerHTML = toolIds.map((id, i) => {
+                    const name = toolNameMap[id] || id;
+                    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `<span class="text-xs text-slate-500 font-bold w-5 text-center">${i+1}</span>`;
+                    return `<button class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700 flex items-center gap-2" data-tool="${id}">
+                        ${typeof medal === 'string' && medal.startsWith('<') ? medal : `<span class="text-sm">${medal}</span>`}
+                        <span class="truncate">${name}</span>
+                    </button>`;
+                }).join('');
+            }
+
+            // 先用 localStorage 快取顯示
+            const cachedRanking = localStorage.getItem('tool_ranking');
+            if (cachedRanking) {
+                try {
+                    const parsed = JSON.parse(cachedRanking);
+                    renderHotTools(parsed.slice(0, 10));
+                } catch(e) {
+                    renderHotTools(defaultHotTools);
+                }
+            } else {
+                renderHotTools(defaultHotTools);
+            }
+
+            // 背景從 GAS 拉最新排行
+            async function fetchToolRanking() {
+                try {
+                    const res = await fetch(GAS_URL + '?action=getToolRanking');
+                    const data = await res.json();
+                    if (data.status === 'success' && data.ranking && data.ranking.length > 0) {
+                        const topIds = data.ranking.map(r => r.toolId).slice(0, 10);
+                        renderHotTools(topIds);
+                        localStorage.setItem('tool_ranking', JSON.stringify(topIds));
+                    }
+                } catch (err) {
+                    console.error('載入工具排行失敗', err);
+                }
+            }
+            fetchToolRanking();
+
+            // 工具點擊追蹤 (fire-and-forget)
+            function trackToolClick(toolId) {
+                getIP().then(ip => {
+                    fetch(GAS_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ action: 'toolClick', toolId: toolId, ip: ip })
+                    }).catch(err => console.error('工具追蹤失敗', err));
+                });
+            }
+
+            // ==========================================
+            // 3. 分類與篩選
+            // ==========================================
             let categories = [];
             let currentCategory = null;
 
@@ -642,7 +543,7 @@
                     (el.tagName === 'DIV' && el.querySelector('.uppercase'))) {
 
                     let title = el.innerText.trim();
-                    if (title.includes('🔥')) title = '🔥 熱門工具';
+                    if (title.includes('🔥')) title = '🔥 熱門工具 TOP 10';
 
                     currentCategory = { title: title, tools: [] };
                     categories.push(currentCategory);
@@ -659,7 +560,7 @@
 
                 const filterBtn = document.createElement('button');
                 filterBtn.className = 'px-4 py-1.5 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900 transition filter-btn whitespace-nowrap';
-                filterBtn.innerText = cat.title.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\s/g, '').replace('熱門工具', '🔥 熱門');
+                filterBtn.innerText = cat.title;
                 filterBtn.dataset.filter = cat.title;
                 categoryFilters.appendChild(filterBtn);
 
