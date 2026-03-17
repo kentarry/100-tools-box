@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多功能工具箱</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 自訂捲軸樣式，讓側邊欄更美觀 */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* 隱藏數字輸入框的上下箭頭，讓畫面更簡潔 */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen overflow-hidden relative">
+
+    <div id="sidebar-overlay"
+        class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
+
+    <aside id="main-sidebar"
+        class="w-64 bg-slate-900 text-white flex flex-col h-full shadow-xl z-50 absolute lg:relative transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="p-6 pb-2 relative">
+            <button id="close-sidebar-btn" class="absolute top-6 right-4 text-slate-400 hover:text-white lg:hidden">
+                ✖
+            </button>
+
+            <h1 class="text-2xl font-bold tracking-wider">🛠️ 多功能工具箱</h1>
+            <p class="text-slate-400 text-sm mt-2 mb-4">實用工具集</p>
+
+            <div class="relative">
+                <input type="text" id="toolSearch" placeholder="搜尋工具..."
+                    class="w-full bg-slate-800 text-white text-sm rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-emerald-500 transition">
+            </div>
+
+            <button id="goHome"
+                class="w-full mt-4 flex items-center justify-center gap-2 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold transition shadow-lg">
+                <span>🏠</span> 工具總覽目錄
+            </button>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto px-4 space-y-1 pb-6 custom-scrollbar" id="menu-nav">
+
+            <div class="sticky top-0 bg-slate-900 pt-4 pb-2 z-10">
+                <div
+                    class="text-sm font-bold text-emerald-400 flex items-center gap-2 mb-1 px-2 uppercase tracking-wider">
+                    <span>🔥</span> 多人使用 / 熱門
+                </div>
+            </div>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="removeBg">高級去背上色機</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="jsonTool">JSON 格式化</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="passwordGen">強密碼產生</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="ipChecker">我的 IP 查詢</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="watermark">機密防盜浮水印</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="wifiQRGen">WiFi 連線 QR</button>
+
+            <div class="my-6 border-t border-slate-700 mx-2"></div>
+
+            <div class="text-sm font-bold text-slate-300 flex items-center gap-2 mb-4 px-2">
+                <span>📁</span> 全部分類目錄
+            </div>
+
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-4 px-2">開發與網頁輔助</div>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="base64Tool">Base64 編碼</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="htmlEntities">HTML 實體轉碼</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="mdPreview">MD 預覽器</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="cleanUrl">網址清洗</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="linkExtractor">連結抓取器</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="unicodeTool">Unicode 轉換器</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="ruler">網頁元件對齊線</button>
+
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">隱私與資訊安全</div>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="pwdChecker">密碼外洩檢查器</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="passwordEntropy">密碼強度試算</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="emailObfuscator">Email 防搜刮混淆</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="burnMessage">純前端加密訊息</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="dataMask">資料去識別化</button>
+
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">影像與色彩處理</div>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="heicConverter">HEIC 轉 JPG</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="videoToGif">影片轉 GIF</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="colorPicker">圖片色碼擷取</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="qrGenerator">萬能 QR Code 生成器</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="colorLighten">顏色亮度調整</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="grayscaleTool">黑白濾鏡預覽</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="urlShortener">短網址生成</button>
+
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">文書與文字排版</div>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="panguSpacing">盤古之白排版器</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="signaturePad">手寫簽名產生器</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="textDecoder">亂碼編碼還原器</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="capitalNumber">大寫金額轉換器</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="caseConverter">大小寫轉換</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="whitespaceFix">多餘空白清理</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="redundancyFilter">廢話過濾檢查器</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="lineCounter">字數行數統計</button>
+
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">金錢理財與消費</div>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="expenseSplitter">多人分帳計算</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="loanCalculator">提前還款試算</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="compoundInterest">複利增長圖表</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="creditInterest">分期真利率</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="currencyConverter">即時匯率換算</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="invoiceChecker">發票快對</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="vatChecker">公司統編查驗</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="fileConverter">萬能檔案轉換</button>
+
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">健康與生活管理</div>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="healthCalc">TDEE 熱量計算</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="recipeScaler">食譜份量換算</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="alcoholCalculator">酒精代謝試算</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="foodRecommender">食材推薦</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="eyeTester">簡易視力檢查</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="blueLightFilter">護眼模式預覽</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="contrastChecker">對比度檢查器</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="weatherOutfit">天氣穿搭建議</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="laundrySymbols">衣服洗標字典</button>
+
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">電腦硬體與檢測</div>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="displayTester">螢幕壞點檢測</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="screenInfo">螢幕資訊檢測</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="mouseTester">滑鼠連點測試</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="keyboardTester">鍵盤按鍵測試</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="fontViewer">本機字型預覽</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="fontCompare">字體對比工具</button>
+
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">實用度量與計算</div>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="unitConverter">通用單位換算</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="areaConverter">坪數面積換算</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="distanceMeter">地圖直線距離</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="screwSize">螺絲規格換算</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="mathReference">數學公式參考</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="tempConverter">溫度單位轉換</button>
+
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">輔助與效率工具</div>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="timezoneCoordinator">跨時區協調</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="fsClock">全螢幕時鐘</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="webWhiteboard">純網頁白板</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="metronome">音樂節拍器</button>
+
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">交通與外宿日常</div>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="taxiFare">計程車資預估</button>
+            <button
+                class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                data-tool="fuelSplitter">自駕油資分攤</button>
+            <button <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">娛樂與社交冷知識</div>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="foodRoulette">命運食神輪盤</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="truthDare">真心話大冒險</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="commentPicker">抽獎留言清洗</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="mbtiGuide">MBTI 相處攻略</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="relativeTitle">親戚稱呼計算</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="fortuneSimulator">今日運勢求籤</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="calendarConverter">農曆國曆轉換</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="greetingGen">長輩圖產生器</button>
+
+                <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">📦 其他與未分類工具</div>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="randomNumber">隨機數產生器</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="arrayShuffler">清單隨機打亂</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="nameStrokes">姓名筆畫試算</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="morseCode">摩斯密碼翻譯</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="typingTest">英打速度測試</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="petAgeCalc">寵物年齡換算</button>
+                <button
+                    class="w-full text-left px-4 py-2.5 rounded-xl text-slate-300 font-medium transition hover:bg-slate-700"
+                    data-tool="passportChecker">護照效期檢查</button>
+
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full relative overflow-y-auto bg-gray-50 min-w-0">
+        <header
+            class="bg-white shadow-sm px-4 md:px-8 py-4 sticky top-0 z-10 flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-4">
+                <button id="mobile-menu-btn"
+                    class="lg:hidden text-2xl text-slate-700 hover:text-emerald-600 transition">
+                    ☰
+                </button>
+                <h2 id="current-tool-title" class="text-lg md:text-xl font-bold text-slate-800 truncate">首頁：工具總覽目錄</h2>
+            </div>
+
+            <div class="flex items-center gap-3 md:gap-6 ml-auto">
+
+                <div class="flex items-center gap-2">
+                    <button onclick="shareTo('fb')"
+                        class="w-8 h-8 md:w-9 md:h-9 hover:scale-110 transition-transform rounded-full overflow-hidden shadow-sm"
+                        title="分享到 Facebook">
+                        <img src="./icon/facebook.png" alt="FB" class="w-full h-full object-cover">
+                    </button>
+                    <button onclick="shareTo('line')"
+                        class="w-8 h-8 md:w-9 md:h-9 hover:scale-110 transition-transform rounded-full overflow-hidden shadow-sm"
+                        title="分享到 LINE">
+                        <img src="./icon/line.png" alt="LINE" class="w-full h-full object-cover">
+                    </button>
+                    <button onclick="shareTo('threads')"
+                        class="w-8 h-8 md:w-9 md:h-9 hover:scale-110 transition-transform rounded-full overflow-hidden shadow-sm"
+                        title="分享到 Threads">
+                        <img src="./icon/threads.png" alt="Threads" class="w-full h-full object-cover">
+                    </button>
+                    <button onclick="shareTo('ig')"
+                        class="w-8 h-8 md:w-9 md:h-9 hover:scale-110 transition-transform rounded-full overflow-hidden shadow-sm"
+                        title="複製連結分享到 Instagram">
+                        <img src="./icon/instagram.png" alt="IG" class="w-full h-full object-cover">
+                    </button>
+                    <button onclick="shareTo('tiktok')"
+                        class="w-8 h-8 md:w-9 md:h-9 hover:scale-110 transition-transform rounded-full overflow-hidden shadow-sm"
+                        title="複製連結分享到 抖音">
+                        <img src="./icon/tiktok.png" alt="TikTok" class="w-full h-full object-cover">
+                    </button>
+                    <button onclick="shareTo('xhs')"
+                        class="w-8 h-8 md:w-9 md:h-9 hover:scale-110 transition-transform rounded-full overflow-hidden shadow-sm"
+                        title="複製連結分享到 小紅書">
+                        <img src="./icon/xiaohongshu.png" alt="小紅書" class="w-full h-full object-cover">
+                    </button>
+                </div>
+
+                <div
+                    class="flex items-center gap-3 bg-slate-100 px-4 py-2 rounded-full border border-slate-200 shrink-0">
+                    <span class="text-lg">👀</span>
+                    <div class="flex flex-col">
+                        <span class="text-xs text-slate-500 leading-none font-bold mb-1">總點閱觀看</span>
+                        <input type="number" id="site-view-counter" readonly
+                            class="text-xl md:text-2xl font-bold text-emerald-600 bg-transparent border-none outline-none p-0 w-24 text-left appearance-none focus:ring-0"
+                            value="0" min="0">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="home-view" class="py-4 md:py-8 px-4 md:px-8 w-full block">
+            <div class="flex flex-col lg:flex-row gap-8 items-start relative w-full justify-between">
+
+                <div class="flex-1 w-full min-w-0 lg:pr-8 max-w-[1400px]">
+
+                    <!-- ✨ 歡迎區塊 Hero Section -->
+                    <div class="hero-section mb-8 rounded-2xl p-6 md:p-8 text-white relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700"></div>
+                        <div class="absolute inset-0 opacity-10"
+                            style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><circle cx=%2240%22 cy=%2240%22 r=%222%22 fill=%22white%22/></svg>'); background-size: 20px 20px;">
+                        </div>
+                        <div class="relative z-10">
+                            <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mb-2">🛠️ 歡迎使用多功能工具箱</h2>
+                            <p class="text-emerald-100 text-sm md:text-base max-w-xl">
+                                集結各種實用線上工具，完全免費、無需安裝。從開發者到日常生活，一站搞定所有需求！</p>
+                        </div>
+                    </div>
+
+                    <!-- 🏷️ 分類篩選按鈕列 -->
+                    <div id="category-filters" class="flex flex-wrap gap-2 mb-8 border-b pb-6 border-gray-200">
+                        <button
+                            class="px-4 py-1.5 rounded-full text-sm font-medium bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 transition filter-btn"
+                            data-filter="all">🗂️ 顯示全部</button>
+                    </div>
+
+                    <!-- 📋 工具網格 -->
+                    <div id="overview-grid" class="space-y-10">
+                    </div>
+                </div>
+
+                <!-- 📢 廣告側欄 (桌面: 右側垂直排列, 手機: 底部水平排列) -->
+                <aside class="w-full lg:w-[150px] shrink-0 lg:ml-auto lg:sticky lg:top-20 lg:self-start">
+                    <div
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider text-center mb-2 flex items-center gap-1 justify-center">
+                        <span>🤝</span> 贊助夥伴
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-3 lg:gap-2">
+                        <a href="https://www.gametower.com.tw/Games/FreePlay/Mj/star31?utm_source=kentarry&utm_medium=banner1&utm_campaign=0313promotion"
+                            target="_blank" data-ad-id="廣告1_"
+                            class="ad-link ad-card block w-full bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition transform hover:-translate-y-1 overflow-hidden group">
+                            <img src="./advertise/advertise1.jpeg" alt="廣告 1"
+                                class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
+                            <div class="ad-label px-2 py-2 text-center">
+                                <span class="text-sm font-semibold text-slate-600">明星三缺一</span>
+                                <span class="text-xs text-slate-400 block">gametower</span>
+                            </div>
+                        </a>
+
+                        <a href="https://www.gametower.com.tw/Games/TMD?utm_source=kentarry&utm_medium=banner2&utm_campaign=0313promotion"
+                            target="_blank" data-ad-id="廣告2_tmd"
+                            class="ad-link ad-card block w-full bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition transform hover:-translate-y-1 overflow-hidden group">
+                            <img src="./advertise/advertise2.jpeg" alt="廣告 2"
+                                class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
+                            <div class="ad-label px-2 py-2 text-center">
+                                <span class="text-sm font-semibold text-slate-600">神來也德州撲克</span>
+                                <span class="text-xs text-slate-400 block">gametower</span>
+                            </div>
+                        </a>
+
+                        <a href="https://cmj2.com.tw?utm_source=kentarry&utm_medium=banner3&utm_campaign=0313promotion"
+                            target="_blank" data-ad-id="廣告3_首頁"
+                            class="ad-link ad-card block w-full bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition transform hover:-translate-y-1 overflow-hidden group">
+                            <img src="./advertise/advertise3.jpeg" alt="廣告 3"
+                                class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
+                            <div class="ad-label px-2 py-2 text-center">
+                                <span class="text-sm font-semibold text-slate-600">競技麻將2</span>
+                                <span class="text-xs text-slate-400 block">cmj2</span>
+                            </div>
+                        </a>
+
+                        <a href="https://www.twainews.com.tw/3325835069235672403720855" target="_blank"
+                            data-ad-id="廣告4_首頁"
+                            class="ad-link ad-card block w-full bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition transform hover:-translate-y-1 overflow-hidden group">
+                            <img src="./advertise/advertise4.jpg" alt="廣告 4"
+                                class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition">
+                            <div class="ad-label px-2 py-2 text-center">
+                                <span class="text-sm font-semibold text-slate-600">台灣AI新聞</span>
+                                <span class="text-xs text-slate-400 block">twainews</span>
+                            </div>
+                        </a>
+                    </div>
+                </aside>
+
+            </div>
+        </div>
+        <div class="p-4 md:p-8 max-w-7xl mx-auto w-full hidden" id="tool-container">
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ==========================================
+            // 1. Google Sheets 計數與追蹤 API (極速優化版)
+            // ==========================================
+            const GAS_URL = "https://script.google.com/macros/s/AKfycbwErP5VVl_6vI29OiH4BAfmvCwC2eYmO5QrvK-BKYmYz1M6dCGyIffxmQgFwKzZlKs/exec";
+            const counterElement = document.getElementById('site-view-counter');
+
+            // 技巧 1：0 秒顯示！先從瀏覽器本地抓取上次的紀錄墊檔
+            let cachedViews = localStorage.getItem('site_total_views');
+            if (cachedViews) {
+                counterElement.value = cachedViews;
+            } else {
+                // 如果是第一次來，顯示三個點避免顯示 0 產生錯覺
+                counterElement.type = "text";
+                counterElement.value = "...";
+            }
+
+            // 技巧 2：極速讀取最新人數 (不寫入，速度快)
+            async function fetchFastTotalViews() {
+                try {
+                    const res = await fetch(GAS_URL); // 發送 GET 請求
+                    const data = await res.json();
+                    if (data.totalViews !== undefined) {
+                        counterElement.type = "number"; // 切換回數字格式
+                        counterElement.value = data.totalViews;
+                        // 更新本地暫存
+                        localStorage.setItem('site_total_views', data.totalViews);
+                    }
+                } catch (err) {
+                    console.error("快速讀取人數失敗", err);
+                }
+            }
+
+            // 取得使用者 IP
+            async function getIP() {
+                try {
+                    const res = await fetch('https://api.ipify.org?format=json');
+                    const data = await res.json();
+                    return data.ip;
+                } catch (e) {
+                    return '未知 IP';
+                }
+            }
+
+            // 技巧 3：背景默默寫入造訪紀錄 (不卡畫面)
+            async function recordVisit() {
+                const ip = await getIP(); // 等待 IP 需要時間
+
+                // ★新增：檢查網址有沒有夾帶分享來源標籤 (例如 ?ref=fb)
+                const urlParams = new URLSearchParams(window.location.search);
+                const trafficSource = urlParams.get('ref') || 'direct'; // 如果沒有標籤，就是 direct(直接造訪)
+
+                try {
+                    const res = await fetch(GAS_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({
+                            action: 'visit',
+                            ip: ip,
+                            userAgent: navigator.userAgent,
+                            ref: trafficSource // ★將來源傳送給 Google Apps Script
+                        })
+                    });
+                    const result = await res.json();
+                    if (result.status === 'success') {
+                        counterElement.value = result.totalViews;
+                        localStorage.setItem('site_total_views', result.totalViews);
+                    }
+                } catch (err) {
+                    console.error("無法連線至計數器 API", err);
+                }
+            }
+
+            // 綁定廣告點擊事件 (背景發送資料給試算表，不影響網頁跳轉)
+            document.querySelectorAll('.ad-link').forEach(ad => {
+                ad.addEventListener('click', async (e) => {
+                    const ip = await getIP();
+                    const adId = ad.getAttribute('data-ad-id') || ad.href;
+                    try {
+                        fetch(GAS_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                            body: JSON.stringify({
+                                action: 'click',
+                                ip: ip,
+                                adId: adId
+                            })
+                        });
+                    } catch (err) {
+                        console.error("廣告追蹤失敗", err);
+                    }
+                });
+            });
+
+            // 【雙管齊下同時啟動】
+            // 1. 馬上抓最新數字更新畫面 (快)
+            fetchFastTotalViews();
+            // 2. 在背景慢慢抓IP並把資料寫入試算表 (慢)
+            recordVisit();
+
+            // ==========================================
+            // 2. 原本的介面邏輯 (側邊欄、篩選器)
+            // ==========================================
+            const nav = document.getElementById('menu-nav');
+            const overviewGrid = document.getElementById('overview-grid');
+            const categoryFilters = document.getElementById('category-filters');
+            const homeView = document.getElementById('home-view');
+            const toolContainer = document.getElementById('tool-container');
+            const currentToolTitle = document.getElementById('current-tool-title');
+            const goHomeBtn = document.getElementById('goHome');
+
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('main-sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+
+            function toggleSidebar() {
+                const isClosed = sidebar.classList.contains('-translate-x-full');
+                if (isClosed) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebarOverlay.classList.remove('hidden');
+                    setTimeout(() => sidebarOverlay.classList.remove('opacity-0'), 10);
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebarOverlay.classList.add('opacity-0');
+                    setTimeout(() => sidebarOverlay.classList.add('hidden'), 300);
+                }
+            }
+
+            mobileMenuBtn.addEventListener('click', toggleSidebar);
+            closeSidebarBtn.addEventListener('click', toggleSidebar);
+            sidebarOverlay.addEventListener('click', toggleSidebar);
+
+            let categories = [];
+            let currentCategory = null;
+
+            Array.from(nav.children).forEach(el => {
+                if ((el.tagName === 'DIV' && el.classList.contains('text-xs')) ||
+                    (el.tagName === 'DIV' && el.querySelector('.uppercase'))) {
+
+                    let title = el.innerText.trim();
+                    if (title.includes('🔥')) title = '🔥 熱門工具';
+
+                    currentCategory = { title: title, tools: [] };
+                    categories.push(currentCategory);
+                } else if (el.tagName === 'BUTTON' && currentCategory && el.hasAttribute('data-tool')) {
+                    currentCategory.tools.push({
+                        id: el.getAttribute('data-tool'),
+                        name: el.innerText.trim()
+                    });
+                }
+            });
+
+            categories.forEach((cat) => {
+                if (cat.tools.length === 0) return;
+
+                const filterBtn = document.createElement('button');
+                filterBtn.className = 'px-4 py-1.5 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900 transition filter-btn whitespace-nowrap';
+                filterBtn.innerText = cat.title.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\s/g, '').replace('熱門工具', '🔥 熱門');
+                filterBtn.dataset.filter = cat.title;
+                categoryFilters.appendChild(filterBtn);
+
+                const section = document.createElement('div');
+                section.className = 'category-section';
+                section.dataset.category = cat.title;
+
+                const titleHtml = `<h3 class="text-lg font-bold text-slate-800 mb-4 border-l-4 border-emerald-400 pl-3">${cat.title}</h3>`;
+
+                let cardsHtml = `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">`;
+                cat.tools.forEach(tool => {
+                    cardsHtml += `
+                        <button class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-emerald-400 text-left transition group overview-tool-btn flex items-center justify-between" data-target="${tool.id}">
+                            <div class="font-medium text-slate-700 group-hover:text-emerald-600 transition truncate pr-2">${tool.name}</div>
+                            <span class="text-slate-300 group-hover:text-emerald-400 transition transform group-hover:translate-x-1 shrink-0">➔</span>
+                        </button>
+                    `;
+                });
+                cardsHtml += `</div>`;
+
+                section.innerHTML = titleHtml + cardsHtml;
+                overviewGrid.appendChild(section);
+            });
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm', 'border-transparent');
+                        b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+                    });
+                    e.target.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+                    e.target.classList.add('bg-emerald-600', 'text-white', 'shadow-sm', 'border-transparent');
+
+                    const filterValue = e.target.dataset.filter;
+                    document.querySelectorAll('.category-section').forEach(section => {
+                        if (filterValue === 'all' || section.dataset.category === filterValue) {
+                            section.style.display = 'block';
+                            section.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300 });
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            document.querySelectorAll('.overview-tool-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const targetId = e.currentTarget.dataset.target;
+                    const sideBarBtn = document.querySelector(`nav button[data-tool="${targetId}"]`);
+                    if (sideBarBtn) {
+                        sideBarBtn.click();
+                        homeView.style.display = 'none';
+                        toolContainer.classList.remove('hidden');
+                    }
+                });
+            });
+
+            goHomeBtn.addEventListener('click', () => {
+                currentToolTitle.innerText = '首頁：工具總覽目錄';
+                toolContainer.classList.add('hidden');
+                homeView.style.display = 'block';
+
+                document.querySelectorAll('#menu-nav button').forEach(b => {
+                    b.classList.remove('active-menu', 'bg-slate-700', 'text-emerald-400');
+                    b.classList.add('text-slate-300');
+                });
+
+                if (window.innerWidth < 1024) toggleSidebar();
+            });
+
+            nav.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON' && e.target.hasAttribute('data-tool')) {
+                    homeView.style.display = 'none';
+                    toolContainer.classList.remove('hidden');
+                    if (window.innerWidth < 1024) toggleSidebar();
+                }
+            });
+
+            // ==========================================
+            // 3. 社群分享功能 (新增紀錄與標籤追蹤)
+            // ==========================================
+            window.shareTo = async function (platform) {
+                // ★背景發送 API 記錄分享動作
+                getIP().then(ip => {
+                    fetch(GAS_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ action: 'share', ip: ip, platform: platform })
+                    }).catch(err => console.error("紀錄分享失敗", err));
+                });
+
+                // ★動態幫網址加上 ?ref=platform
+                const shareUrlObj = new URL(window.location.href);
+                shareUrlObj.searchParams.set('ref', platform);
+
+                // 使用帶有來源標記的新網址來分享
+                const currentUrl = encodeURIComponent(shareUrlObj.toString());
+                const title = encodeURIComponent(document.title);
+
+                if (platform === 'fb') {
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, '_blank', 'width=600,height=400');
+                } else if (platform === 'line') {
+                    window.open(`https://social-plugins.line.me/lineit/share?url=${currentUrl}`, '_blank');
+                } else if (platform === 'threads') {
+                    window.open(`https://threads.net/intent/post?text=${title}%20${currentUrl}`, '_blank');
+                } else if (['ig', 'tiktok', 'xhs'].includes(platform)) {
+                    navigator.clipboard.writeText(shareUrlObj.toString()).then(() => {
+                        const platformName = platform === 'ig' ? 'Instagram' : (platform === 'tiktok' ? '抖音' : '小紅書');
+                        alert(`✅ 已複製網站連結！\n請開啟 ${platformName} APP 貼上連結與朋友分享。`);
+                    }).catch(err => {
+                        console.error('複製失敗', err);
+                        alert('複製失敗，請手動複製網址分享！');
+                    });
+                }
+            };
+
+        }); // <--- 💡 把原本在上面的 DOMContentLoaded 結尾 `});` 移到這裡！
+    </script>
+
+    <script src="tools/watermark.js"></script>
+    <script src="tools/Background-Removal.js"></script>
+    <script src="tools/Password-Leak-Checker.js"></script>
+    <script src="tools/Email-Obfuscator.js"></script>
+    <script src="tools/Secure-URL-Message.js"></script>
+    <script src="tools/Signature-Pad.js"></script>
+    <script src="tools/Pangu-Spacing.js"></script>
+    <script src="tools/Text-Decoder.js"></script>
+    <script src="tools/capital-number.js"></script>
+    <script src="tools/redundancy-filter.js"></script>
+    <script src="tools/heic-Converter.js"></script>
+    <script src="tools/Color-Picker.js"></script>
+    <script src="tools/url-Shortener.js"></script>
+    <script src="tools/Display-Tester.js"></script>
+    <script src="tools/Web-Whiteboard.js"></script>
+    <script src="tools/Expense-Splitter.js"></script>
+    <script src="tools/WiFi-QR-Gen.js"></script>
+    <script src="tools/Relative-Title.js"></script>
+    <script src="tools/Truth-or-Dare.js"></script>
+    <script src="tools/Comment-Picker.js"></script>
+    <script src="tools/Loan-Calculator.js"></script>
+    <script src="tools/Compound-Interest.js"></script>
+    <script src="tools/Currency-Converter.js"></script>
+    <script src="tools/Credit-Interest.js"></script>
+    <script src="tools/Timezone-Coordinator.js"></script>
+    <script src="tools/Unit-Converter.js"></script>
+    <script src="tools/Health-Calc.js"></script>
+    <script src="tools/Typing-Test.js"></script>
+    <script src="tools/food-RecipeDB.js"></script>
+    <script src="tools/food-RecipeDB-2.js"></script>
+    <script src="tools/food-RecipeDB-3.js"></script>
+    <script src="tools/food-Recommender.js"></script>
+    <script src="tools/Alcohol-Calculator.js"></script>
+    <script src="tools/Recipe-Scaler.js"></script>
+    <script src="tools/VAT-Checker.js"></script>
+    <script src="tools/Laundry-Symbols.js"></script>
+    <script src="tools/Contrast-Checker.js"></script>
+    <script src="tools/Mouse-Tester.js"></script>
+    <script src="tools/JSON-Tool.js"></script>
+    <script src="tools/Base64-Tool.js"></script>
+    <script src="tools/Pet-Age-Calc.js"></script>
+    <script src="tools/Calendar-Converter.js"></script>
+    <script src="tools/Fortune-Simulator.js"></script>
+    <script src="tools/Greeting-Gen.js"></script>
+    <script src="tools/Font-Viewer.js"></script>
+    <script src="tools/Morse-Code.js"></script>
+    <script src="tools/Clipboard-Manager.js"></script>
+    <script src="tools/Big-Timer.js"></script>
+    <script src="tools/MBTI-Guide.js"></script>
+    <script src="tools/Food-Roulette.js"></script>
+    <script src="tools/Passport-Checker.js"></script>
+    <script src="tools/Taxi-Fare.js"></script>
+    <script src="tools/Fuel-Splitter.js"></script>
+    <script src="tools/Keyboard-Tester.js"></script>
+    <script src="tools/Area-Converter.js"></script>
+    <script src="tools/Distance-Meter.js"></script>
+    <script src="tools/Password-Entropy.js"></script>
+    <script src="tools/Weather-Outfit-Data.js"></script>
+    <script src="tools/Weather-Outfit.js"></script>
+    <script src="tools/Video-to-GIF.js"></script>
+    <script src="tools/Metronome.js"></script>
+    <script src="tools/File-Converter.js"></script>
+    <script src="tools/Invoice-Checker.js"></script>
+    <script src="tools/VAT-Checker.js"></script>
+    <script src="tools/Company-Search.js"></script>
+    <script src="tools/Screw-Size.js"></script>
+    <script src="tools/HTML-Entities.js"></script>
+    <script src="tools/Password-Gen.js"></script>
+    <script src="tools/Screen-Info.js"></script>
+    <script src="tools/MD-Preview.js"></script>
+    <script src="tools/Clean-URL.js"></script>
+    <script src="tools/FS-Clock.js"></script>
+    <script src="tools/Name-Strokes.js"></script>
+    <script src="tools/Font-Compare.js"></script>
+    <script src="tools/qr-Generator.js"></script>
+    <script src="tools/Case-Converter.js"></script>
+    <script src="tools/Line-Counter.js"></script>
+    <script src="tools/Random-Number.js"></script>
+    <script src="tools/Link-Extractor.js"></script>
+    <script src="tools/Math-Reference.js"></script>
+    <script src="tools/Temp-Converter.js"></script>
+    <script src="tools/Unicode-Tool.js"></script>
+    <script src="tools/Eye-Tester.js"></script>
+    <script src="tools/Ruler.js"></script>
+    <script src="tools/Data-Mask.js"></script>
+    <script src="tools/Color-Lighten.js"></script>
+    <script src="tools/Whitespace-Fix.js"></script>
+    <script src="tools/Array-Shuffler.js"></script>
+    <script src="tools/Blue-Light-Filter.js"></script>
+    <script src="tools/Grayscale-Tool.js"></script>
+    <script src="tools/IP-Checker.js"></script>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
