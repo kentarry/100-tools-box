@@ -1,0 +1,85 @@
+{
+    "status":  "ok",
+    "feed":  {
+                 "url":  "https://invoice.etax.nat.gov.tw/invoice.xml",
+                 "title":  "統一發票中獎號碼",
+                 "link":  "https://www.etax.nat.gov.tw/etw-main/ETW183W1",
+                 "author":  "",
+                 "description":  "統一發票中獎號碼",
+                 "image":  ""
+             },
+    "items":  [
+                  {
+                      "title":  "114年 11~12月",
+                      "pubDate":  "2026-01-25 04:59:47",
+                      "link":  "https://www.etax.nat.gov.tw/etw-main/ETW183W2_11411",
+                      "guid":  "cfefadcf3aedac2c559d1105e2d9426f",
+                      "author":  "",
+                      "thumbnail":  "",
+                      "description":  "\n\u003cp\u003e特別獎：97023797\u003c/p\u003e\n\u003cp\u003e特獎：00507588\u003c/p\u003e\n\u003cp\u003e頭獎：92377231、05232592、78125249\u003c/p\u003e\n",
+                      "content":  "\n\u003cp\u003e特別獎：97023797\u003c/p\u003e\n\u003cp\u003e特獎：00507588\u003c/p\u003e\n\u003cp\u003e頭獎：92377231、05232592、78125249\u003c/p\u003e\n",
+                      "enclosure":  "",
+                      "categories":  ""
+                  },
+                  {
+                      "title":  "114年 09~10月",
+                      "pubDate":  "2025-11-25 06:00:02",
+                      "link":  "https://www.etax.nat.gov.tw/etw-main/ETW183W2_11409",
+                      "guid":  "930269356f9059253984fdf0779df1df",
+                      "author":  "",
+                      "thumbnail":  "",
+                      "description":  "\n\u003cp\u003e特別獎：25834483\u003c/p\u003e\n\u003cp\u003e特獎：46587380\u003c/p\u003e\n\u003cp\u003e頭獎：41016094、98081574、07309261\u003c/p\u003e\n",
+                      "content":  "\n\u003cp\u003e特別獎：25834483\u003c/p\u003e\n\u003cp\u003e特獎：46587380\u003c/p\u003e\n\u003cp\u003e頭獎：41016094、98081574、07309261\u003c/p\u003e\n",
+                      "enclosure":  "",
+                      "categories":  ""
+                  },
+                  {
+                      "title":  "114年 07~08月",
+                      "pubDate":  "2025-09-25 06:01:35",
+                      "link":  "https://www.etax.nat.gov.tw/etw-main/ETW183W2_11407",
+                      "guid":  "be9c841ec179b3e7fd87927b870a9098",
+                      "author":  "",
+                      "thumbnail":  "",
+                      "description":  "\n\u003cp\u003e特別獎：53960536\u003c/p\u003e\n\u003cp\u003e特獎：51509866\u003c/p\u003e\n\u003cp\u003e頭獎：43074088、22870220、38253117\u003c/p\u003e\n",
+                      "content":  "\n\u003cp\u003e特別獎：53960536\u003c/p\u003e\n\u003cp\u003e特獎：51509866\u003c/p\u003e\n\u003cp\u003e頭獎：43074088、22870220、38253117\u003c/p\u003e\n",
+                      "enclosure":  "",
+                      "categories":  ""
+                  },
+                  {
+                      "title":  "114年 05~06月",
+                      "pubDate":  "2025-07-25 06:00:08",
+                      "link":  "https://www.etax.nat.gov.tw/etw-main/ETW183W2_11405",
+                      "guid":  "0de7c0f24c0cd86a631b9dbdfe4b0347",
+                      "author":  "",
+                      "thumbnail":  "",
+                      "description":  "\n\u003cp\u003e特別獎：47406327\u003c/p\u003e\n\u003cp\u003e特獎：05579058\u003c/p\u003e\n\u003cp\u003e頭獎：49912232、73145004、99174704\u003c/p\u003e\n",
+                      "content":  "\n\u003cp\u003e特別獎：47406327\u003c/p\u003e\n\u003cp\u003e特獎：05579058\u003c/p\u003e\n\u003cp\u003e頭獎：49912232、73145004、99174704\u003c/p\u003e\n",
+                      "enclosure":  "",
+                      "categories":  ""
+                  },
+                  {
+                      "title":  "114年 03~04月",
+                      "pubDate":  "2025-05-25 05:31:51",
+                      "link":  "https://www.etax.nat.gov.tw/etw-main/ETW183W2_11403",
+                      "guid":  "7f813a26328a0e51182ed883fb8aa2e5",
+                      "author":  "",
+                      "thumbnail":  "",
+                      "description":  "\n\u003cp\u003e特別獎：64557267\u003c/p\u003e\n\u003cp\u003e特獎：64808075\u003c/p\u003e\n\u003cp\u003e頭獎：04322277、07903676、98883497\u003c/p\u003e\n",
+                      "content":  "\n\u003cp\u003e特別獎：64557267\u003c/p\u003e\n\u003cp\u003e特獎：64808075\u003c/p\u003e\n\u003cp\u003e頭獎：04322277、07903676、98883497\u003c/p\u003e\n",
+                      "enclosure":  "",
+                      "categories":  ""
+                  },
+                  {
+                      "title":  "114年 01~02月",
+                      "pubDate":  "2025-03-25 06:00:19",
+                      "link":  "https://www.etax.nat.gov.tw/etw-main/ETW183W2_11401",
+                      "guid":  "05f57e8530327ec7e4544c66f9de9a1d",
+                      "author":  "",
+                      "thumbnail":  "",
+                      "description":  "\n\u003cp\u003e特別獎：95980685\u003c/p\u003e\n\u003cp\u003e特獎：37166026\u003c/p\u003e\n\u003cp\u003e頭獎：78394633、26503878、39200954\u003c/p\u003e\n",
+                      "content":  "\n\u003cp\u003e特別獎：95980685\u003c/p\u003e\n\u003cp\u003e特獎：37166026\u003c/p\u003e\n\u003cp\u003e頭獎：78394633、26503878、39200954\u003c/p\u003e\n",
+                      "enclosure":  "",
+                      "categories":  ""
+                  }
+              ]
+}
