@@ -62,3 +62,132 @@ html {
 .hover\:shadow-xl:hover {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
+
+/* ======= 首頁改善新增樣式 ======= */
+
+/* Hero 歡迎區塊 */
+.hero-section {
+    box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.3);
+}
+
+/* 工具數量 Badge */
+.tool-count-badge {
+    transition: transform 0.3s ease;
+}
+
+.tool-count-badge:hover {
+    transform: scale(1.05);
+}
+
+/* 熱門工具卡片 - 特殊漸層邊框 */
+.hot-tool-card {
+    position: relative;
+    background: linear-gradient(135deg, #fff7ed, #fffbeb, #ffffff);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.hot-tool-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #f97316, #eab308, #10b981);
+    z-index: -1;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.hot-tool-card:hover::before {
+    opacity: 1;
+}
+
+.hot-tool-card .hot-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: linear-gradient(135deg, #f97316, #ef4444);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 0 12px 0 8px;
+    z-index: 2;
+    letter-spacing: 0.5px;
+}
+
+/* 廣告卡片 */
+.ad-card {
+    border-radius: 12px;
+}
+
+.ad-label {
+    border-top: 1px solid #f1f5f9;
+    background: #fafbfc;
+}
+
+/* 分類標題圖示 */
+.category-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-right: 6px;
+}
+
+/* 一般工具卡片 hover 效果增強 */
+.overview-tool-btn {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overview-tool-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* 進場動畫 - 逐一淡入 */
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-animate {
+    animation: cardFadeIn 0.4s ease-out forwards;
+}
+
+/* 脈動效果 - 熱門標籤 */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(249, 115, 22, 0);
+    }
+}
+
+.hot-tool-card:hover {
+    animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+/* 響應式優化 */
+@media (max-width: 640px) {
+    .hero-section h2 {
+        font-size: 1.25rem;
+    }
+
+    .tool-count-badge {
+        padding: 8px 12px;
+    }
+
+    .tool-count-badge .text-3xl {
+        font-size: 1.5rem;
+    }
+}
