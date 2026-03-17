@@ -89,6 +89,11 @@ function render_dashboard() {
  * 🔄 功能 B：工具載入與渲染路由
  */
 function loadTool(toolName, title, buttonElement) {
+    // 追蹤工具點擊到 Google Sheets
+    if (typeof trackToolClick === 'function') {
+        trackToolClick(toolName);
+    }
+
     // 1. 清空舊內容
     container.innerHTML = '';
     currentToolTitle.textContent = title;
