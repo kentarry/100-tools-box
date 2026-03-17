@@ -71,7 +71,7 @@ window.render_alcoholCalculator = function () {
         const genderInput = document.getElementById('alcGender');
         const amountInput = document.getElementById('alcAmount');
         const percentInput = document.getElementById('alcPercent');
-        
+
         const timeDisplay = document.getElementById('alcTime');
         const bacDisplay = document.getElementById('alcBac');
         const statusDisplay = document.getElementById('alcStatus');
@@ -93,16 +93,16 @@ window.render_alcoholCalculator = function () {
             // 使用 Widmark Formula 計算 BAC
             // 酒精重量 (克) = 體積(ml) * 濃度(%) * 酒精密度(0.789)
             const alcoholGrams = amount * (percent / 100) * 0.789;
-            
+
             // 性別常數 (r)
             const r = gender === 'male' ? 0.68 : 0.55;
-            
+
             // 體重轉換為克
             const weightGrams = weight * 1000;
 
             // 預估最高 BAC (%) = (酒精克數 / (體重克數 * r)) * 100
             let bac = (alcoholGrams / (weightGrams * r)) * 100;
-            
+
             // 人體平均代謝率約為每小時 0.015% BAC
             const metabolismRate = 0.015;
             let hours = bac / metabolismRate;
@@ -150,7 +150,7 @@ window.render_alcoholCalculator = function () {
                 amountInput.value = target.getAttribute('data-ml');
                 percentInput.value = target.getAttribute('data-abv');
                 calculateMetabolism();
-                
+
                 // 添加點擊小動畫
                 target.classList.add('scale-95');
                 setTimeout(() => target.classList.remove('scale-95'), 100);
