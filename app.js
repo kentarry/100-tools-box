@@ -5,9 +5,13 @@
 // 1. 取得全域重要的 DOM 元素
 const container = document.getElementById('tool-container');
 const currentToolTitle = document.getElementById('current-tool-title');
-const menuButtons = document.querySelectorAll('#menu-nav button');
 const toolSearch = document.getElementById('toolSearch');
 const goHomeBtn = document.getElementById('goHome');
+
+// menuButtons: 動態取得，確保包含後來新增的按鈕
+function getMenuButtons() {
+    return document.querySelectorAll('#menu-nav button[data-tool]');
+}
 
 // 2. 定義工具關鍵字與圖示的自動對照表 (用於目錄卡片)
 const iconMap = {
@@ -37,7 +41,7 @@ function render_dashboard() {
     currentToolTitle.textContent = "工具總覽目錄";
 
     // 清除側邊欄所有高亮狀態
-    menuButtons.forEach(btn => {
+    getMenuButtons().forEach(btn => {
         btn.classList.remove('active-menu', 'bg-slate-800', 'text-emerald-400');
         btn.classList.add('text-slate-300');
         btn.style.borderLeft = "none";
@@ -51,7 +55,7 @@ function render_dashboard() {
 
     const grid = document.getElementById('dashboard-grid');
 
-    menuButtons.forEach(btn => {
+    getMenuButtons().forEach(btn => {
         const toolName = btn.getAttribute('data-tool');
         const title = btn.textContent.trim();
 
@@ -90,7 +94,7 @@ function loadTool(toolName, title, buttonElement) {
     currentToolTitle.textContent = title;
 
     // 2. 更新側邊欄視覺樣式
-    menuButtons.forEach(btn => {
+    getMenuButtons().forEach(btn => {
         btn.classList.remove('active-menu', 'bg-slate-800', 'text-emerald-400');
         btn.classList.add('text-slate-300');
         btn.style.borderLeft = "none";
@@ -130,13 +134,13 @@ function loadTool(toolName, title, buttonElement) {
 if (toolSearch) {
     toolSearch.addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase().trim();
-        menuButtons.forEach(btn => {
+        getMenuButtons().forEach(btn => {
             const text = btn.textContent.toLowerCase();
             const toolCode = btn.getAttribute('data-tool').toLowerCase();
 
             // 同時比對中文名稱與工具內部 ID
             if (text.includes(term) || toolCode.includes(term)) {
-                btn.style.display = 'block';
+                btn.style.display = '';
             } else {
                 btn.style.display = 'none';
             }
@@ -144,14 +148,18 @@ if (toolSearch) {
     });
 }
 
-// 4. 事件綁定
-menuButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        const toolName = e.currentTarget.getAttribute('data-tool');
-        const title = e.currentTarget.textContent.trim();
-        loadTool(toolName, title, e.currentTarget);
+// 4. 事件綁定 — 使用事件委派，確保動態新增的按鈕也能被點擊
+const menuNav = document.getElementById('menu-nav');
+if (menuNav) {
+    menuNav.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-tool]');
+        if (btn) {
+            const toolName = btn.getAttribute('data-tool');
+            const title = btn.textContent.trim();
+            loadTool(toolName, title, btn);
+        }
     });
-});
+}
 
 // 5. 「回目錄」按鈕綁定
 if (goHomeBtn) {
